@@ -3,17 +3,19 @@ package requests
 import (
 	utils "http-testing/utils"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 // GetPageResponseData returns page body byte array from response
 func GetPageResponseData(url string) []byte {
 	resp, err := http.Get(url)
-	utils.HandleError(err)
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer resp.Body.Close()
 
 	pageResponseData, err := ioutil.ReadAll(resp.Body)
-	utils.HandleError(err)
 
 	return pageResponseData
 }

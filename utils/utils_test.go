@@ -18,7 +18,10 @@ func TestBytesBuffer(t *testing.T) {
 func TestWriteToFile(t *testing.T) {
 	WriteToFile(testString, "")
 
-	if _, err := os.Stat(testString + testFileExtension); err != nil {
+	got, err := os.Stat(testString + testFileExtension)
+	if err != nil {
+		t.Errorf("writeToFile failed to find %s", testString+testFileExtension)
+	} else if got != nil {
 		if os.IsNotExist(err) {
 			t.Errorf("writeToFile failed to find %s", testString+testFileExtension)
 		}

@@ -6,13 +6,6 @@ import (
 	"os"
 )
 
-// HandleError handles global errors
-func HandleError(err error) {
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 // BytesBuffer writes byte date into a returned buffer
 func BytesBuffer(responseData []byte) bytes.Buffer {
 	var buffer bytes.Buffer
@@ -27,7 +20,7 @@ func BytesBuffer(responseData []byte) bytes.Buffer {
 func WriteToFile(nameFile, content string) {
 	file, err := os.Create(nameFile + ".html")
 	if err != nil {
-		return
+		log.Fatal(err)
 	}
 	defer file.Close()
 
