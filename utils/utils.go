@@ -19,10 +19,12 @@ func BytesBuffer(responseData []byte) bytes.Buffer {
 	for sliceByte := range responseData {
 		buffer.WriteString(string(responseData[sliceByte]))
 	}
+
 	return buffer
 }
 
-func writeToFile(nameFile, content string) {
+// WriteToFile writes contents to file
+func WriteToFile(nameFile, content string) {
 	file, err := os.Create(nameFile + ".html")
 	if err != nil {
 		return
