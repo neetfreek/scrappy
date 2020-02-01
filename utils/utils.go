@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"log"
+	"os"
 )
 
 // HandleError handles global errors
@@ -19,4 +20,14 @@ func BytesBuffer(responseData []byte) bytes.Buffer {
 		buffer.WriteString(string(responseData[sliceByte]))
 	}
 	return buffer
+}
+
+func writeToFile(nameFile, content string) {
+	file, err := os.Create(nameFile + ".html")
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	file.WriteString(content)
 }

@@ -1,7 +1,7 @@
 package requests
 
 import (
-	utils "http-testing/lib/utils"
+	utils "http-testing/utils"
 	"io/ioutil"
 	"net/http"
 )
@@ -16,4 +16,14 @@ func GetPageResponseData(url string) []byte {
 	utils.HandleError(err)
 
 	return pageResponseData
+}
+
+// GetPageResponseString returns page body string from response
+func GetPageResponseString(url string) string {
+
+	pageResponseData := GetPageResponseData(url)
+	buffer := utils.BytesBuffer(pageResponseData)
+
+	pageResponseString := buffer.String()
+	return pageResponseString
 }
