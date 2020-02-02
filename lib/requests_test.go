@@ -1,4 +1,4 @@
-package requests
+package lib
 
 import (
 	"reflect"

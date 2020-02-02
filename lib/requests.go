@@ -1,7 +1,6 @@
-package requests
+package lib
 
 import (
-	utils "http-testing/utils"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -24,7 +23,7 @@ func GetPageResponseData(url string) []byte {
 func GetPageResponseString(url string) string {
 
 	pageResponseData := GetPageResponseData(url)
-	buffer := utils.BytesBuffer(pageResponseData)
+	buffer := BytesBuffer(pageResponseData)
 
 	pageResponseString := buffer.String()
 	return pageResponseString

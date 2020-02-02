@@ -1,11 +1,10 @@
 package main
 
 import (
-	requests "http-testing/lib"
-	utils "http-testing/utils"
+	lib "http-testing/lib"
 )
 
 func main() {
 	url := "https://news.ycombinator.com/item?id=22201337"
-	utils.WriteToFile("test", requests.GetPageResponseString(url))
+	lib.WriteToFile("test", lib.GetPageResponseString(url))
 }
