@@ -7,8 +7,8 @@ import (
 
 var testURL = "http://google.com"
 
-func TestGetPageResponseData(t *testing.T) {
-	got := GetPageResponseData(testURL)
+func TestPageData(t *testing.T) {
+	got := PageData(testURL)
 
 	typeGot := reflect.TypeOf(got).String()
 
@@ -17,8 +17,8 @@ func TestGetPageResponseData(t *testing.T) {
 	}
 }
 
-func TestGetPageResponseString(t *testing.T) {
-	got := GetPageResponseString(testURL)
+func TestPageString(t *testing.T) {
+	got := PageString(testURL)
 
 	typeGot := reflect.TypeOf(got).String()
 

@@ -9,7 +9,7 @@ import (
 )
 
 // GetPageResponseData returns page body byte array from response
-func GetPageResponseData(url string) []byte {
+func PageData(url string) []byte {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -22,10 +22,10 @@ func GetPageResponseData(url string) []byte {
 }
 
 // GetPageResponseString returns page body string from response
-func GetPageResponseString(url string) string {
+func PageString(url string) string {
 	p := bluemonday.UGCPolicy()
 
-	pageResponseData := GetPageResponseData(url)
+	pageResponseData := PageData(url)
 	buffer := BytesBuffer(pageResponseData)
 
 	pageResponseString := buffer.String()
