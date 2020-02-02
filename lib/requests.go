@@ -27,7 +27,6 @@ func GetPageResponseString(url string) string {
 	buffer := BytesBuffer(pageResponseData)
 
 	pageResponseString := buffer.String()
-	return pageResponseString
 
 	pageResponseStringSanitized := p.Sanitize(pageResponseString)
 
