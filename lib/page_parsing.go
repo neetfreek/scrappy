@@ -75,14 +75,21 @@ func Tester(url string) {
 
 		switch responsToken {
 		case html.ErrorToken:
-			// End of the document, we're done
 			return
 		case html.StartTagToken:
-			fmt.Printf("\n%v\n", responsToken)
+			// fmt.Printf("\n%v\n", responsToken)
 			tag := responseToken.Token()
 			tagType := tag.Data
 			tokenType(tagType)
-			fmt.Printf("\n%v\n", tag.Data)
+			// fmt.Printf("\n%v\n", tag.Data)
+
+			// Print href links (url and image links)
+			for _, a := range tag.Attr {
+				if a.Key == "href" {
+					fmt.Println("Found :", a.Val)
+					break
+				}
+			}
 		}
 	}
 }
