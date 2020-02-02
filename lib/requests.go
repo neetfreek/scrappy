@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/microcosm-cc/bluemonday"
 )
 
 // GetPageResponseData returns page body byte array from response
