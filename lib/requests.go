@@ -21,10 +21,15 @@ func GetPageResponseData(url string) []byte {
 
 // GetPageResponseString returns page body string from response
 func GetPageResponseString(url string) string {
+	p := bluemonday.UGCPolicy()
 
 	pageResponseData := GetPageResponseData(url)
 	buffer := BytesBuffer(pageResponseData)
 
 	pageResponseString := buffer.String()
 	return pageResponseString
+
+	pageResponseStringSanitized := p.Sanitize(pageResponseString)
+
+	return pageResponseStringSanitized
 }
