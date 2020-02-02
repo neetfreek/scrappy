@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net/http"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -55,5 +56,44 @@ func crawlNodes(tag string, n *html.Node) {
 
 	for childNode := n.FirstChild; childNode != nil; childNode = childNode.NextSibling {
 		crawlNodes(tag, childNode)
+	}
+}
+// Tester tests
+func Tester(url string) {
+	// Get response
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	// Make response token
+	responseToken := html.NewTokenizer(resp.Body)
+
+	for {
+		responsToken := responseToken.Next()
+
+		switch responsToken {
+		case html.ErrorToken:
+			// End of the document, we're done
+			return
+		case html.StartTagToken:
+			fmt.Printf("\n%v\n", responsToken)
+			tag := responseToken.Token()
+			tagType := tag.Data
+			tokenType(tagType)
+			fmt.Printf("\n%v\n", tag.Data)
+		}
+	}
+}
+
+func tokenType(tokenType string) {
+	switch tokenType {
+	case "p":
+		fmt.Print("PARAGRAPH")
+	case "a":
+		fmt.Print("ANCHOR")
+	default:
+		fmt.Print("SOME OTHER TAG TYPE")
 	}
 }
