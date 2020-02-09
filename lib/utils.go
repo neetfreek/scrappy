@@ -26,3 +26,11 @@ func WriteToFile(nameFile, content string) {
 
 	file.WriteString(content)
 }
+
+// IdentifyTag returns string constant value of tag
+func IdentifyTag(tag string) string {
+	if tagName, ok := HTMLMap[tag]; ok {
+		return tagName
+	}
+	return ""
+}
