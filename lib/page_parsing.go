@@ -31,13 +31,15 @@ func PrintAttribute(url string) {
 		//For working with tags, e.g. inspecting HTML element tag values or attributes
 		case html.StartTagToken:
 			tag := responseToken.Token()
+			tagString := tag.String()
 			tagType := tag.Data
 			tagTypeCurrent = tagType
 
-			// Print start tags' attributes
-			if (IdentifyTag(tagType)) == HTMLMap[HTMLTags.tagHyperLink] {
+			// Print start tags' tagHyperLink attributes containing http
+			if (IdentifyTag(tagType)) == HTMLMap[HTMLTags.tagHyperLink] &&
+				strings.Contains(tagString, "http") {
 				for _, attribute := range tag.Attr {
-					fmt.Print("\n tagAttribute: ", attribute.Val)
+					fmt.Printf("LINK: %v\n\n", attribute.Val)
 					break
 				}
 			}
@@ -46,9 +48,9 @@ func PrintAttribute(url string) {
 			text := strings.TrimSpace(responseToken.Token().String())
 			textTrimmed := strings.TrimSpace(text)
 			// Print non-empty strings
-			if tagTypeCurrent == HTMLMap[HTMLTags.tagParagrah] &&
+			if (IdentifyTag(tagTypeCurrent)) == HTMLTags.tagParagrah &&
 				len(textTrimmed) > 0 {
-				fmt.Print(textTrimmed)
+				fmt.Printf("%v \n\n", textTrimmed)
 				tagTypeCurrent = ""
 			}
 		}
