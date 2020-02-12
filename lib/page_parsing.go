@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"golang.org/x/net/html"
 )
@@ -19,6 +20,7 @@ func PrintAttribute(url string) {
 
 	// Make response token
 	responseToken := html.NewTokenizer(resp.Body)
+	tagTypeCurrent := ""
 
 	for {
 		responsToken := responseToken.Next()
@@ -26,26 +28,29 @@ func PrintAttribute(url string) {
 		switch responsToken {
 		case html.ErrorToken:
 			return
-		//For working with tags, e.g. inspecting tag values or attributes
+		//For working with tags, e.g. inspecting HTML element tag values or attributes
 		case html.StartTagToken:
 			tag := responseToken.Token()
 			tagType := tag.Data
-			fmt.Print("\nStartTagToken tag: ", tag)
-			fmt.Print("\ntagType: ", tagType)
-			// if (IdentifyTag(tagType)) != "" {
-			// 	for _, attribute := range tag.Attr {
-			// 		fmt.Print("\n tagAttribute: ", attribute.Val)
-			// 		break
-			// 	}
-			// }
-		case html.TextToken:
-			tag := responseToken.Token()
-			fmt.Print("\nTextToken tag: ", tag)
-			// if (IdentifyTag(tag.String())) == HTMLTags.tagParagrah {
-			// 	fmt.Print(tag, "\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+			tagTypeCurrent = tagType
 
-			// }
-			// fmt.Print(tag, "\n")
+			// Print start tags' attributes
+			if (IdentifyTag(tagType)) == HTMLMap[HTMLTags.tagHyperLink] {
+				for _, attribute := range tag.Attr {
+					fmt.Print("\n tagAttribute: ", attribute.Val)
+					break
+				}
+			}
+		// For working with text content of HTML elements
+		case html.TextToken:
+			text := strings.TrimSpace(responseToken.Token().String())
+			textTrimmed := strings.TrimSpace(text)
+			// Print non-empty strings
+			if tagTypeCurrent == HTMLMap[HTMLTags.tagParagrah] &&
+				len(textTrimmed) > 0 {
+				fmt.Print(textTrimmed)
+				tagTypeCurrent = ""
+			}
 		}
 	}
 }
