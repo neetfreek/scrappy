@@ -4,6 +4,9 @@ import (
 	"bytes"
 	"log"
 	"os"
+	"regexp"
+	"strings"
+	"time"
 )
 
 // BytesBuffer writes byte date into a returned buffer
@@ -16,15 +19,37 @@ func BytesBuffer(responseData []byte) bytes.Buffer {
 	return buffer
 }
 
-// WriteToFile writes contents to file
-func WriteToFile(nameFile, content string) {
-	file, err := os.Create(nameFile + ".html")
+// WritePageToFile writes HTML page contents to file
+func WritePageToFile(url string) {
+	fileName := getFileNameFromURL(url)
+	pageString := PageString(url)
+	WriteToFile(fileName, pageString)
+}
+
+// WriteToFile writes data to a file
+func WriteToFile(fileName, content string) {
+	file, err := os.Create(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
 	file.WriteString(content)
+}
+
+func getFileNameFromURL(url string) string {
+	fileNameByHost := regexp.MustCompile("(.*)[/]")
+	matchfileNameByHost := fileNameByHost.FindStringSubmatch(url)
+	matchString := matchfileNameByHost[0]
+	matchStringDelimited := strings.Split(matchString, "/")
+	fileName := matchStringDelimited[2]
+	if fileName == "" {
+		now := time.Now()
+		fileName = "UntitledFile_" + now.Format("200601021504")
+	}
+	fileNameWithSuffix := fileName + ".html"
+
+	return fileNameWithSuffix
 }
 
 // IdentifyTag returns string constant value of tag
