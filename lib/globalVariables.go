@@ -6,8 +6,16 @@ var HTMLTags tags
 // HTMLMap maps html tag node values to global string literals
 var HTMLMap map[string]string
 
-// SetupTags initialises HTMLMap and HTMLTags
-func SetupTags() {
+// InputOptionsMap maps user input options TODO: CHANGE TO ARRAY FOR ORDERED ITERATING
+var InputOptionsMap = []string{
+	"Save page text content to file (.txt)",
+	"Save links to file (.txt)",
+	"Save page to file (.html)",
+	"Exit application",
+}
+
+// SetupConstants initialises HTMLMap and HTMLTags
+func SetupConstants() {
 	makeHTMLTags()
 	makeHTMLMap()
 }
