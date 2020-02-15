@@ -262,4 +262,8 @@ var pageActionSaveLinks = "Save page links to file (.txt)"
 var pageActionSavePage = "Save page to file (.html)"
 var pageActionSaveImages = "Save page images to directory"
 
+// Parameters
+var typeDirectory = "directory"
+var typeFile = "file"
+
 var imageFormats = []string{".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".pbm", ".pgm", ".ppm", "pnm", ".png", ".webp"}
