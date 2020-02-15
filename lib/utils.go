@@ -71,10 +71,7 @@ func stringToInt(amountString string) int {
 	stringToClean := amountString
 	removeNonDigts := regexp.MustCompile("[^0-9]+")
 	cleanedString := removeNonDigts.ReplaceAllString(stringToClean, "")
-	amountInt, err := strconv.Atoi(cleanedString)
-	if err != nil {
-		log.Fatal(err)
-	}
+	amountInt, _ := strconv.Atoi(cleanedString)
 
 	return amountInt
 }
