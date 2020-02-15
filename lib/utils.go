@@ -20,11 +20,15 @@ func bytesBuffer(responseData []byte) bytes.Buffer {
 }
 
 func writePageToFile(url string) {
+	nameDirectory := getNameFromURL(url, typeDirectory)
+	nameFile := getNameFromURL(url, typeFile)
 	pageString := pageString(url)
-	WriteToFile(fileName, pageString)
+	writeToFile(nameDirectory, nameFile, pageString)
 }
 
 func writeToFile(nameDirectory, nameFile, content string) {
+	os.MkdirAll(nameDirectory, os.ModePerm)
+	file, err := os.Create("./" + nameDirectory + "/" + nameFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,15 +38,22 @@ func writeToFile(nameDirectory, nameFile, content string) {
 }
 
 func getNameFromURL(url, fileOrDir string) string {
+	nameByHost := regexp.MustCompile("(.*)[/]")
+	matchNameByHost := nameByHost.FindStringSubmatch(url)
+	matchString := matchNameByHost[0]
 	matchStringDelimited := strings.Split(matchString, "/")
-	fileName := matchStringDelimited[2]
-	if fileName == "" {
-		now := time.Now()
-		fileName = "UntitledFile_" + now.Format("200601021504")
-	}
-	fileNameWithSuffix := fileName + ".html"
+	name := ""
 
-	return fileNameWithSuffix
+	if fileOrDir == typeDirectory {
+		name = matchStringDelimited[2]
+	} else {
+		name = matchStringDelimited[len(matchStringDelimited)-2] + "_" + timeStamp()
+	}
+
+	if name == "" {
+		name = "Untitled_" + timeStamp()
+	}
+	return name
 }
 
 func identifyTag(tag string) string {
