@@ -23,8 +23,15 @@ func UserActionPage() {
 		userInput = getUserInputOption()
 		userInputInt = stringToInt(userInput) - 1
 	}
+	userOptionCommand := InputOptionsMap[userInputInt]
 
-	callUserActionPageFunction(userInputInt)
+	if userOptionCommand == messageActionExit {
+		ExitRequested = true
+	} else {
+		userOptionPageURL := getUserPageOption()
+		GetPage(userOptionPageURL, userOptionCommand)
+	}
+
 }
 
 func showUserInputOptions() {
