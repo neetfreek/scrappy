@@ -9,6 +9,7 @@ import (
 	"golang.org/x/net/html"
 )
 
+// GetPage gets different content from provided url depending on action
 func GetPage(url, action string) {
 
 	resp, err := http.Get(url)
@@ -18,7 +19,11 @@ func GetPage(url, action string) {
 	}
 	defer resp.Body.Close()
 
-	loopGetPage(resp.Body, action)
+	if action == pageActionSavePage {
+		getPageHTML(url)
+	} else {
+		loopGetPage(resp.Body, action)
+	}
 }
 
 func loopGetPage(body io.Reader, action string) {
@@ -50,7 +55,7 @@ func loopGetPage(body io.Reader, action string) {
 
 func getPageText(token html.Token, tag string) {
 	tagCurrent := tag
-	tagCurrentIdentified := IdentifyTag(tagCurrent)
+	tagCurrentIdentified := identifyTag(tagCurrent)
 	text := strings.TrimSpace(token.String())
 	textTrimmed := strings.TrimSpace(text)
 
@@ -84,6 +89,6 @@ func getPageImagesOrLinks(token html.Token, tag, action string) {
 	}
 }
 
-func getPageHTML(*html.Tokenizer) {
-
+func getPageHTML(url string) {
+	writePageToFile(url)
 }
