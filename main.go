@@ -12,7 +12,7 @@ func main() {
 }
 
 func appLoop() {
-	for {
+	for !lib.ExitRequested {
 		lib.UserActionPage()
 	}
 }
