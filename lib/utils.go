@@ -77,3 +77,8 @@ func stringToInt(amountString string) int {
 
 	return amountInt
 }
+
+func timeStamp() string {
+	now := time.Now()
+	return now.Format("200601021504")
+}
