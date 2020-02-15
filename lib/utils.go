@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -58,4 +59,20 @@ func IdentifyTag(tag string) string {
 		return tagName
 	}
 	return ""
+}
+
+func removeCharacters(stringToStrip, charToRemove string) string {
+	stringCleaned := strings.ReplaceAll(stringToStrip, charToRemove, "")
+
+	return stringCleaned
+}
+
+func stringToInt(amountString string) int {
+
+	amountInt, err := strconv.Atoi(amountString)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return amountInt
 }
