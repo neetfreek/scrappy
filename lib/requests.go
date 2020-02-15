@@ -25,7 +25,7 @@ func pageString(url string) string {
 	p := bluemonday.UGCPolicy()
 
 	pageResponseData := pageData(url)
-	buffer := BytesBuffer(pageResponseData)
+	buffer := bytesBuffer(pageResponseData)
 
 	pageResponseString := buffer.String()
 
