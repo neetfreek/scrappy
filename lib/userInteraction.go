@@ -14,12 +14,17 @@ func GreetUser() {
 
 // UserActionPage handles users actions regard HTTP pages
 func UserActionPage() {
+	userInput := ""
+	userInputInt := -1
+
+	for userInputInt < 0 || userInputInt > 3 {
 	fmt.Printf(messageMakeSelection)
 	showUserInputOptions()
-	userInput := getUserInputOption()
-	userInputInt := stringToInt(userInput)
-	// VALIDATE INPUT MAPS TO InputOptionsMap OPTIONS
-	callInteractionFunction(userInputInt)
+		userInput = getUserInputOption()
+		userInputInt = stringToInt(userInput) - 1
+	}
+
+	callUserActionPageFunction(userInputInt)
 }
 
 func showUserInputOptions() {
