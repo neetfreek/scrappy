@@ -8,10 +8,10 @@ var HTMLMap map[string]string
 
 // InputOptionsMap maps user input options TODO: CHANGE TO ARRAY FOR ORDERED ITERATING
 var InputOptionsMap = []string{
-	"Save page text content to file (.txt)",
-	"Save links to file (.txt)",
-	"Save page to file (.html)",
-	"Exit application",
+	pageActionSaveText,
+	pageActionSaveLinks,
+	pageActionSavePage,
+	actionExit,
 }
 
 // SetupConstants initialises HTMLMap and HTMLTags
@@ -245,6 +245,16 @@ type tags struct {
 	tagVariable            string
 }
 
+// ExitRequested handles whether app loop terminates
+var ExitRequested = false
+
 // Greeting for player
 var messageGreeting = "Welcome to scrappy!"
 var messageMakeSelection = "Make a selection:\n"
+
+// Page action input options
+var pageActionSaveText = "Save page text content to file (.txt)"
+var pageActionSaveLinks = "Save links to file (.txt)"
+var pageActionSavePage = "Save page to file (.html)"
+
+var actionExit = "Exit application"
