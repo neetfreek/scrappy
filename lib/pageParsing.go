@@ -2,19 +2,19 @@ package lib
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 
 	"golang.org/x/net/html"
 )
 
-// PrintAttribute for testing print http tag attributes to standard output
-func PrintAttribute(url string) {
+// GetPage for testing print http tag attributes to standard output
+func GetPage(url, action string) {
 	// Get response
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("%v, %v\n", noPage, url)
+		return
 	}
 	defer resp.Body.Close()
 
@@ -28,21 +28,26 @@ func PrintAttribute(url string) {
 		switch responsToken {
 		case html.ErrorToken:
 			return
-		//For working with tags, e.g. inspecting HTML element tag values or attributes
+
 		case html.StartTagToken:
 			tag := responseToken.Token()
-			tagString := tag.String()
+			// tagString := tag.String()
 			tagType := tag.Data
 			tagTypeCurrent = tagType
 
-			// Print start tags' tagHyperLink attributes containing http
-			if (IdentifyTag(tagType)) == HTMLMap[HTMLTags.tagHyperLink] &&
-				strings.Contains(tagString, "http") {
-				for _, attribute := range tag.Attr {
-					fmt.Printf("LINK: %v\n\n", attribute.Val)
-					break
+			// Get links, images
+			if IdentifyTag(tagType) == HTMLTags.tagHyperLink {
+				attributesToSplit := tag.String()
+				attributesSplit := strings.Split(attributesToSplit, " ")
+				for _, attr := range attributesSplit {
+					if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) {
+						fmt.Println("IMAGE: ", attr)
+					} else if strings.Contains(attr, "href") {
+						fmt.Println("LINK: ", attr)
+					}
 				}
 			}
+
 		// For working with text content of HTML elements
 		case html.TextToken:
 			text := strings.TrimSpace(responseToken.Token().String())
