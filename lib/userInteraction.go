@@ -1,34 +1,42 @@
 package lib
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
 
-// UserInteraction handles showing options for, and getting, user interactions
-func UserInteraction() {
-	showUserInputOptions()
-	userInput := getUserInputOption()
-	fmt.Printf("User input received: %v\n", userInput)
-	callInteractionFunction(userInput)
+// GreetUser on application start
+func GreetUser() {
+	fmt.Println(messageGreeting)
+	fmt.Println()
 }
 
-func showInstruction() {
-	fmt.Println("Make a scrappy selection:")
+// UserActionPage handles users actions regard HTTP pages
+func UserActionPage() {
+	fmt.Printf(messageMakeSelection)
+	showUserInputOptions()
+	userInput := getUserInputOption()
+	userInputInt := stringToInt(userInput)
+	// VALIDATE INPUT MAPS TO InputOptionsMap OPTIONS
+	callInteractionFunction(userInputInt)
 }
 
 func showUserInputOptions() {
 	for counter := range InputOptionsMap {
 		fmt.Printf("%v. %v\n", counter+1, InputOptionsMap[counter])
 	}
+	fmt.Println()
 }
 
-func getUserInputOption() int {
-	userInput := 1
-	fmt.Println("Get user input, for now set to 1")
-	// Read user input as int, decrement by one, assign to var
-	// if error, call showUserInputOptions
-	// Return user input variable
-	return userInput
+func getUserInputOption() string {
+	reader := bufio.NewReader(os.Stdin)
+	userInputString, _ := reader.ReadString('\n')
+	userInputStringCleaned := removeCharacters(userInputString, "\n")
+
+	return userInputStringCleaned
 }
 
 func callInteractionFunction(userInput int) {
-	fmt.Println("Call appropriate function for user input", userInput)
+	fmt.Printf("Great. Just image we did option %v with a web page. Impressive!\n\n", userInput)
 }
