@@ -244,3 +244,7 @@ type tags struct {
 	tagListUnordered       string
 	tagVariable            string
 }
+
+// Greeting for player
+var messageGreeting = "Welcome to scrappy!"
+var messageMakeSelection = "Make a selection:\n"
