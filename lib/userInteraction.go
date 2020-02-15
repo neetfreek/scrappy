@@ -28,6 +28,7 @@ func UserActionPage() {
 }
 
 func showUserInputOptions() {
+	fmt.Println()
 	for counter := range InputOptionsMap {
 		fmt.Printf("%v. %v\n", counter+1, InputOptionsMap[counter])
 	}
