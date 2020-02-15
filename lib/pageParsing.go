@@ -9,10 +9,8 @@ import (
 	"golang.org/x/net/html"
 )
 
-// GetPage for testing print http tag attributes to standard output
 func GetPage(url, action string) {
 
-	// Get response
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("%v, %v\n", messageNoPage, url)
