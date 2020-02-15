@@ -22,7 +22,7 @@ func BytesBuffer(responseData []byte) bytes.Buffer {
 // WritePageToFile writes HTML page contents to file
 func WritePageToFile(url string) {
 	fileName := getFileNameFromURL(url)
-	pageString := PageString(url)
+	pageString := pageString(url)
 	WriteToFile(fileName, pageString)
 }
 
