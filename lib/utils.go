@@ -10,8 +10,7 @@ import (
 	"time"
 )
 
-// BytesBuffer writes byte date into a returned buffer
-func BytesBuffer(responseData []byte) bytes.Buffer {
+func bytesBuffer(responseData []byte) bytes.Buffer {
 	var buffer bytes.Buffer
 	for sliceByte := range responseData {
 		buffer.WriteString(string(responseData[sliceByte]))
@@ -20,16 +19,12 @@ func BytesBuffer(responseData []byte) bytes.Buffer {
 	return buffer
 }
 
-// WritePageToFile writes HTML page contents to file
-func WritePageToFile(url string) {
-	fileName := getFileNameFromURL(url)
+func writePageToFile(url string) {
 	pageString := pageString(url)
 	WriteToFile(fileName, pageString)
 }
 
-// WriteToFile writes data to a file
-func WriteToFile(fileName, content string) {
-	file, err := os.Create(fileName)
+func writeToFile(nameDirectory, nameFile, content string) {
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,10 +33,7 @@ func WriteToFile(fileName, content string) {
 	file.WriteString(content)
 }
 
-func getFileNameFromURL(url string) string {
-	fileNameByHost := regexp.MustCompile("(.*)[/]")
-	matchfileNameByHost := fileNameByHost.FindStringSubmatch(url)
-	matchString := matchfileNameByHost[0]
+func getNameFromURL(url, fileOrDir string) string {
 	matchStringDelimited := strings.Split(matchString, "/")
 	fileName := matchStringDelimited[2]
 	if fileName == "" {
@@ -53,8 +45,7 @@ func getFileNameFromURL(url string) string {
 	return fileNameWithSuffix
 }
 
-// IdentifyTag returns string constant value of tag
-func IdentifyTag(tag string) string {
+func identifyTag(tag string) string {
 
 	if tagName, ok := HTMLMap[tag]; ok {
 

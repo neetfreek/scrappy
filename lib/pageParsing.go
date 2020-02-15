@@ -70,7 +70,7 @@ func getPageText(token html.Token, tag string) {
 }
 
 func getPageImagesOrLinks(token html.Token, tag, action string) {
-	if IdentifyTag(tag) == HTMLTags.tagHyperLink {
+	if identifyTag(tag) == HTMLTags.tagHyperLink {
 		attributesToSplit := token.String()
 		attributesSplit := strings.Split(attributesToSplit, " ")
 
