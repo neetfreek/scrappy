@@ -2,6 +2,7 @@ package lib
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -10,6 +11,7 @@ import (
 
 // GetPage for testing print http tag attributes to standard output
 func GetPage(url, action string) {
+
 	// Get response
 	resp, err := http.Get(url)
 	if err != nil {
@@ -18,46 +20,72 @@ func GetPage(url, action string) {
 	}
 	defer resp.Body.Close()
 
-	// Make response token
-	responseToken := html.NewTokenizer(resp.Body)
-	tagTypeCurrent := ""
+	loopGetPage(resp.Body, action)
+}
+
+func loopGetPage(body io.Reader, action string) {
+	responseToken := html.NewTokenizer(body)
+	tagCurrent := ""
 
 	for {
-		responsToken := responseToken.Next()
-
-		switch responsToken {
+		responseTokenNext := responseToken.Next()
+		switch responseTokenNext {
 		case html.ErrorToken:
 			return
 
-		case html.StartTagToken:
-			tag := responseToken.Token()
-			// tagString := tag.String()
-			tagType := tag.Data
-			tagTypeCurrent = tagType
-
-			// Get links, images
-			if IdentifyTag(tagType) == HTMLTags.tagHyperLink {
-				attributesToSplit := tag.String()
-				attributesSplit := strings.Split(attributesToSplit, " ")
-				for _, attr := range attributesSplit {
-					if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) {
-						fmt.Println("IMAGE: ", attr)
-					} else if strings.Contains(attr, "href") {
-						fmt.Println("LINK: ", attr)
-					}
+		default:
+			token := responseToken.Token()
+			tag := token.Data
+			if responseTokenNext == html.StartTagToken {
+				tagCurrent = tag
+				if action == pageActionSaveImages || action == pageActionSaveLinks {
+					getPageImagesOrLinks(token, tag, action)
 				}
 			}
-
-		// For working with text content of HTML elements
-		case html.TextToken:
-			text := strings.TrimSpace(responseToken.Token().String())
-			textTrimmed := strings.TrimSpace(text)
-			// Print non-empty strings
-			if (IdentifyTag(tagTypeCurrent)) == HTMLTags.tagParagrah &&
-				len(textTrimmed) > 0 {
-				fmt.Printf("%v \n\n", textTrimmed)
-				tagTypeCurrent = ""
+			if responseTokenNext == html.TextToken && action == pageActionSaveText {
+				getPageText(token, tagCurrent)
+				tagCurrent = ""
 			}
 		}
 	}
+}
+
+func getPageText(token html.Token, tag string) {
+	tagCurrent := tag
+	tagCurrentIdentified := IdentifyTag(tagCurrent)
+	text := strings.TrimSpace(token.String())
+	textTrimmed := strings.TrimSpace(text)
+
+	if len(textTrimmed) > 0 &&
+		tagCurrentIdentified == HTMLTags.tagParagrah ||
+		tagCurrentIdentified == HTMLTags.tagEmphasised ||
+		tagCurrentIdentified == HTMLTags.tagAlternativeVoice ||
+		tagCurrentIdentified == HTMLTags.tagDelete ||
+		tagCurrentIdentified == HTMLTags.tagHeader1 ||
+		tagCurrentIdentified == HTMLTags.tagHeader2 ||
+		tagCurrentIdentified == HTMLTags.tagHeader3 ||
+		tagCurrentIdentified == HTMLTags.tagHeader4 ||
+		tagCurrentIdentified == HTMLTags.tagHeader5 ||
+		tagCurrentIdentified == HTMLTags.tagHeader6 {
+		fmt.Printf("%v \n\n", textTrimmed)
+	}
+}
+
+func getPageImagesOrLinks(token html.Token, tag, action string) {
+	if IdentifyTag(tag) == HTMLTags.tagHyperLink {
+		attributesToSplit := token.String()
+		attributesSplit := strings.Split(attributesToSplit, " ")
+
+		for _, attr := range attributesSplit {
+			if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) && action == pageActionSaveImages {
+				fmt.Println("IMAGE: ", attr)
+			} else if strings.Contains(attr, "href") && action == pageActionSaveLinks {
+				fmt.Println("LINK: ", attr)
+			}
+		}
+	}
+}
+
+func getPageHTML(*html.Tokenizer) {
+
 }
