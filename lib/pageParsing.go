@@ -13,7 +13,7 @@ func GetPage(url, action string) {
 	// Get response
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("%v, %v\n", noPage, url)
+		fmt.Printf("%v, %v\n", messageNoPage, url)
 		return
 	}
 	defer resp.Body.Close()

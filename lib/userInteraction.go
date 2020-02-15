@@ -18,8 +18,8 @@ func UserActionPage() {
 	userInputInt := -1
 
 	for userInputInt < 0 || userInputInt > len(InputOptionsMap)-1 {
-		fmt.Printf(messageMakeSelection)
 		showUserInputOptions()
+		fmt.Print(messageChoosePageAction)
 		userInput = getUserInputOption()
 		userInputInt = stringToInt(userInput) - 1
 	}
@@ -42,16 +42,9 @@ func getUserInputOption() string {
 	return userInputStringCleaned
 }
 
-func callUserActionPageFunction(userOption int) {
+func getUserPageOption() string {
+	fmt.Print(messageChoosePageURL)
+	pageURL := getUserInputOption()
 
-	userOptionCommand := InputOptionsMap[userOption]
-	switch userOptionCommand {
-	case pageActionSaveLinks:
-	case pageActionSavePage:
-	case pageActionSaveText:
-	case actionExit:
-		ExitRequested = true
-
-	}
-	fmt.Println(userOptionCommand)
+	return pageURL
 }

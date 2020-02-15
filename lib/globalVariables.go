@@ -11,7 +11,8 @@ var InputOptionsMap = []string{
 	pageActionSaveText,
 	pageActionSaveLinks,
 	pageActionSavePage,
-	actionExit,
+	pageActionSaveImages,
+	messageActionExit,
 }
 
 // SetupConstants initialises HTMLMap and HTMLTags
@@ -248,16 +249,17 @@ type tags struct {
 // ExitRequested handles whether app loop terminates
 var ExitRequested = false
 
-// Greeting for player
+// Standard use messages to player
 var messageGreeting = "Welcome to scrappy!"
-var messageMakeSelection = "Make a selection:\n"
+var messageChoosePageAction = "Choose an action: "
+var messageChoosePageURL = "Enter a URL: "
+var messageNoPage = "Could not find page"
+var messageActionExit = "Exit application"
 
 // Page action input options
 var pageActionSaveText = "Save page text content to file (.txt)"
-var pageActionSaveLinks = "Save links to file (.txt)"
+var pageActionSaveLinks = "Save page links to file (.txt)"
 var pageActionSavePage = "Save page to file (.html)"
-
-var noPage = "Could not find page"
-var actionExit = "Exit application"
+var pageActionSaveImages = "Save page images to directory"
 
 var imageFormats = []string{".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".pbm", ".pgm", ".ppm", "pnm", ".png", ".webp"}
