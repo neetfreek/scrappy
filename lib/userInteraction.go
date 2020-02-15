@@ -17,7 +17,7 @@ func UserActionPage() {
 	userInput := ""
 	userInputInt := -1
 
-	for userInputInt < 0 || userInputInt > 3 {
+	for userInputInt < 0 || userInputInt > len(InputOptionsMap)-1 {
 	fmt.Printf(messageMakeSelection)
 	showUserInputOptions()
 		userInput = getUserInputOption()
