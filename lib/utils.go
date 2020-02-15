@@ -55,10 +55,21 @@ func getFileNameFromURL(url string) string {
 
 // IdentifyTag returns string constant value of tag
 func IdentifyTag(tag string) string {
+
 	if tagName, ok := HTMLMap[tag]; ok {
+
 		return tagName
 	}
 	return ""
+}
+
+func attributeContainsImage(attribute string) bool {
+	for _, imageFormat := range imageFormats {
+		if strings.Contains(attribute, imageFormat) {
+			return true
+		}
+	}
+	return false
 }
 
 func removeCharacters(stringToStrip, charToRemove string) string {
