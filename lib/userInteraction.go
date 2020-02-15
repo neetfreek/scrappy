@@ -18,8 +18,8 @@ func UserActionPage() {
 	userInputInt := -1
 
 	for userInputInt < 0 || userInputInt > len(InputOptionsMap)-1 {
-	fmt.Printf(messageMakeSelection)
-	showUserInputOptions()
+		fmt.Printf(messageMakeSelection)
+		showUserInputOptions()
 		userInput = getUserInputOption()
 		userInputInt = stringToInt(userInput) - 1
 	}
@@ -42,6 +42,16 @@ func getUserInputOption() string {
 	return userInputStringCleaned
 }
 
-func callInteractionFunction(userInput int) {
-	fmt.Printf("Great. Just image we did option %v with a web page. Impressive!\n\n", userInput)
+func callUserActionPageFunction(userOption int) {
+
+	userOptionCommand := InputOptionsMap[userOption]
+	switch userOptionCommand {
+	case pageActionSaveLinks:
+	case pageActionSavePage:
+	case pageActionSaveText:
+	case actionExit:
+		ExitRequested = true
+
+	}
+	fmt.Println(userOptionCommand)
 }
