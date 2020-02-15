@@ -257,4 +257,7 @@ var pageActionSaveText = "Save page text content to file (.txt)"
 var pageActionSaveLinks = "Save links to file (.txt)"
 var pageActionSavePage = "Save page to file (.html)"
 
+var noPage = "Could not find page"
 var actionExit = "Exit application"
+
+var imageFormats = []string{".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".pbm", ".pgm", ".ppm", "pnm", ".png", ".webp"}
