@@ -68,8 +68,10 @@ func removeCharacters(stringToStrip, charToRemove string) string {
 }
 
 func stringToInt(amountString string) int {
-
-	amountInt, err := strconv.Atoi(amountString)
+	stringToClean := amountString
+	removeNonDigts := regexp.MustCompile("[^0-9]+")
+	cleanedString := removeNonDigts.ReplaceAllString(stringToClean, "")
+	amountInt, err := strconv.Atoi(cleanedString)
 	if err != nil {
 		log.Fatal(err)
 	}
