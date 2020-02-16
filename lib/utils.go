@@ -19,11 +19,12 @@ func bytesBuffer(responseData []byte) bytes.Buffer {
 	return buffer
 }
 
-func writePageToFile(url string) {
-	nameDirectory := getNameFromURL(url, typeDirectory)
-	nameFile := getNameFromURL(url, typeFile)
-	pageString := pageString(url)
-	writeToFile(nameDirectory, nameFile, pageString)
+func writePageContentsToFile(url, pageString, action string) {
+	nameDirectoryParent := getNameDirectoryFromURL(url, "")
+	nameDirectoryContent := nameDirectoryParent + "/" + getNameDirectoryFromURL(url, action)
+	// nameDirectory := getNameFromURL(url, typeDirectory)
+	nameFile := getNameFromURL(url, typeFile, action)
+	writeToFile(nameDirectoryContent, nameFile, pageString)
 }
 
 func writeToFile(nameDirectory, nameFile, content string) {
@@ -37,7 +38,22 @@ func writeToFile(nameDirectory, nameFile, content string) {
 	file.WriteString(content)
 }
 
-func getNameFromURL(url, fileOrDir string) string {
+func getNameDirectoryFromURL(url, action string) string {
+	nameByHost := regexp.MustCompile("(.*)[/]")
+	matchNameByHost := nameByHost.FindStringSubmatch(url)
+	matchString := matchNameByHost[0]
+	matchStringDelimited := strings.Split(matchString, "/")
+	name := ""
+	suffix := getNameSuffixByAction(action)
+	name = matchStringDelimited[2]
+
+	if name == "" {
+		name = "Untitled_" + timeStamp()
+	}
+	return name + suffix
+}
+
+func getNameFromURL(url, fileOrDir, typeContent string) string {
 	nameByHost := regexp.MustCompile("(.*)[/]")
 	matchNameByHost := nameByHost.FindStringSubmatch(url)
 	matchString := matchNameByHost[0]
@@ -54,6 +70,22 @@ func getNameFromURL(url, fileOrDir string) string {
 		name = "Untitled_" + timeStamp()
 	}
 	return name
+}
+
+func getNameSuffixByAction(action string) string {
+	suffix := ""
+
+	switch action {
+	case pageActionSaveImages:
+		suffix = suffixImageLinks
+	case pageActionSaveLinks:
+		suffix = suffixLinks
+	case pageActionSavePage:
+		suffix = suffixHTML
+	case pageActionSaveText:
+		suffix = suffixText
+	}
+	return suffix
 }
 
 func identifyTag(tag string) string {
