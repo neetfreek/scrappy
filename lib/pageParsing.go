@@ -11,7 +11,8 @@ import (
 
 // GetPage gets different content from provided url depending on action
 func GetPage(url, action string) {
-
+	pageDataCollection := []string{}
+	pageDataToWrite := ""
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("%v, %v\n", messageNoPage, url)
@@ -20,21 +21,26 @@ func GetPage(url, action string) {
 	defer resp.Body.Close()
 
 	if action == pageActionSavePage {
-		getPageHTML(url)
+		pageDataToWrite = getPageHTML(url)
+		writePageContentsToFile(url, pageDataToWrite, action)
 	} else {
-		loopGetPage(resp.Body, action)
+		pageDataCollection = loopGetPage(resp.Body, action)
+		pageDataToWrite := strings.Join(pageDataCollection, "\n")
+		writePageContentsToFile(url, pageDataToWrite, action)
 	}
 }
 
-func loopGetPage(body io.Reader, action string) {
+func loopGetPage(body io.Reader, action string) []string {
 	responseToken := html.NewTokenizer(body)
+	pageDataCollection := []string{}
+	pageData := ""
 	tagCurrent := ""
 
 	for {
 		responseTokenNext := responseToken.Next()
 		switch responseTokenNext {
 		case html.ErrorToken:
-			return
+			return pageDataCollection
 
 		default:
 			token := responseToken.Token()
@@ -42,18 +48,24 @@ func loopGetPage(body io.Reader, action string) {
 			if responseTokenNext == html.StartTagToken {
 				tagCurrent = tag
 				if action == pageActionSaveImages || action == pageActionSaveLinks {
-					getPageImagesOrLinks(token, tag, action)
+					pageData = getPageImagesOrLinks(token, tag, action)
+					if pageData != "" {
+						pageDataCollection = append(pageDataCollection, pageData)
+					}
 				}
 			}
 			if responseTokenNext == html.TextToken && action == pageActionSaveText {
-				getPageText(token, tagCurrent)
+				pageData = getPageText(token, tagCurrent)
+				if pageData != "" {
+					pageDataCollection = append(pageDataCollection, pageData)
+				}
 				tagCurrent = ""
 			}
 		}
 	}
 }
 
-func getPageText(token html.Token, tag string) {
+func getPageText(token html.Token, tag string) string {
 	tagCurrent := tag
 	tagCurrentIdentified := identifyTag(tagCurrent)
 	text := strings.TrimSpace(token.String())
@@ -70,25 +82,27 @@ func getPageText(token html.Token, tag string) {
 		tagCurrentIdentified == HTMLTags.tagHeader4 ||
 		tagCurrentIdentified == HTMLTags.tagHeader5 ||
 		tagCurrentIdentified == HTMLTags.tagHeader6 {
-		fmt.Printf("%v \n\n", textTrimmed)
+		return textTrimmed
 	}
+	return ""
 }
 
-func getPageImagesOrLinks(token html.Token, tag, action string) {
+func getPageImagesOrLinks(token html.Token, tag, action string) string {
 	if identifyTag(tag) == HTMLTags.tagHyperLink {
 		attributesToSplit := token.String()
 		attributesSplit := strings.Split(attributesToSplit, " ")
 
 		for _, attr := range attributesSplit {
 			if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) && action == pageActionSaveImages {
-				fmt.Println("IMAGE: ", attr)
+				return attr
 			} else if strings.Contains(attr, "href") && action == pageActionSaveLinks {
-				fmt.Println("LINK: ", attr)
+				return attr
 			}
 		}
 	}
+	return ""
 }
 
-func getPageHTML(url string) {
-	writePageToFile(url)
+func getPageHTML(url string) string {
+	return pageString(url)
 }
