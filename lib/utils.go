@@ -22,8 +22,7 @@ func bytesBuffer(responseData []byte) bytes.Buffer {
 func writePageContentsToFile(url, pageString, action string) {
 	nameDirectoryParent := getNameDirectoryFromURL(url, "")
 	nameDirectoryContent := nameDirectoryParent + "/" + getNameDirectoryFromURL(url, action)
-	// nameDirectory := getNameFromURL(url, typeDirectory)
-	nameFile := getNameFromURL(url, typeFile, action)
+	nameFile := getNameFileFromURL(url, typeFile, action)
 	writeToFile(nameDirectoryContent, nameFile, pageString)
 }
 
@@ -53,23 +52,21 @@ func getNameDirectoryFromURL(url, action string) string {
 	return name + suffix
 }
 
-func getNameFromURL(url, fileOrDir, typeContent string) string {
-	nameByHost := regexp.MustCompile("(.*)[/]")
-	matchNameByHost := nameByHost.FindStringSubmatch(url)
-	matchString := matchNameByHost[0]
-	matchStringDelimited := strings.Split(matchString, "/")
-	name := ""
-
-	if fileOrDir == typeDirectory {
-		name = matchStringDelimited[2]
-	} else {
-		name = matchStringDelimited[len(matchStringDelimited)-2] + "_" + timeStamp()
+func getNameFileFromURL(url, fileOrDir, typeContent string) string {
+	indexStartNamePage := strings.LastIndex(url, "/") + 1
+	namePage := url[indexStartNamePage:len(url)]
+	// Omit backslash at end of url
+	if indexStartNamePage == len(url) {
+		url := url[0 : len(url)-1]
+		indexStartNamePage = strings.LastIndex(url, "/") + 1
+		namePage = url[indexStartNamePage:len(url)]
 	}
 
-	if name == "" {
-		name = "Untitled_" + timeStamp()
+	nameTimeStamped := namePage + "_" + timeStamp()
+	if namePage == "" {
+		nameTimeStamped = "Untitled_" + timeStamp()
 	}
-	return name
+	return nameTimeStamped
 }
 
 func getNameSuffixByAction(action string) string {
