@@ -11,7 +11,7 @@ var InputOptionsMap = []string{
 	pageActionSaveText,
 	pageActionSaveLinks,
 	pageActionSavePage,
-	pageActionSaveImages,
+	pageActionSaveImageLinks,
 	messageActionExit,
 }
 
@@ -263,7 +263,7 @@ var messageActionExit = "Exit application"
 var pageActionSaveText = "Save page text content to file (.txt)"
 var pageActionSaveLinks = "Save page links to file (.txt)"
 var pageActionSavePage = "Save page to file (.html)"
-var pageActionSaveImages = "Save page images to directory"
+var pageActionSaveImageLinks = "Save page image links to directory"
 
 // Directory, file name siffixes
 var suffixImageLinks = "_linksImage"

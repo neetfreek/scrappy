@@ -47,7 +47,7 @@ func loopGetPage(body io.Reader, action string) []string {
 			tag := token.Data
 			if responseTokenNext == html.StartTagToken {
 				tagCurrent = tag
-				if action == pageActionSaveImages || action == pageActionSaveLinks {
+				if action == pageActionSaveImageLinks || action == pageActionSaveLinks {
 					pageData = getPageImagesOrLinks(token, tag, action)
 					if pageData != "" {
 						pageDataCollection = append(pageDataCollection, pageData)
@@ -93,7 +93,7 @@ func getPageImagesOrLinks(token html.Token, tag, action string) string {
 		attributesSplit := strings.Split(attributesToSplit, " ")
 
 		for _, attr := range attributesSplit {
-			if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) && action == pageActionSaveImages {
+			if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) && action == pageActionSaveImageLinks {
 				return attr
 			} else if strings.Contains(attr, "href") && action == pageActionSaveLinks {
 				return attr

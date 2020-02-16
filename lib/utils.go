@@ -76,7 +76,7 @@ func getNameSuffixByAction(action string) string {
 	suffix := ""
 
 	switch action {
-	case pageActionSaveImages:
+	case pageActionSaveImageLinks:
 		suffix = suffixImageLinks
 	case pageActionSaveLinks:
 		suffix = suffixLinks
