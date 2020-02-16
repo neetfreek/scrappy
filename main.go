@@ -5,9 +5,6 @@ import (
 )
 
 func main() {
-	// url := "https://news.ycombinator.com/item?id=22213210"
-	// url := "https://www.neetfreek.net/tales-of-arrissia"
-	// url := "https://www.oldbookillustrations.com/illustrations/de-groof-falling/"
 	lib.SetupConstants()
 	lib.GreetUser()
 	appLoop()
