@@ -265,6 +265,12 @@ var pageActionSaveLinks = "Save page links to file (.txt)"
 var pageActionSavePage = "Save page to file (.html)"
 var pageActionSaveImages = "Save page images to directory"
 
+// Directory, file name siffixes
+var suffixImageLinks = "_linksImage"
+var suffixLinks = "_links"
+var suffixText = "_textContent"
+var suffixHTML = "_htmlContent"
+
 // Parameters
 var typeDirectory = "directory"
 var typeFile = "file"
