@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -20,9 +21,17 @@ func GetPage(url, action string) {
 	}
 	defer resp.Body.Close()
 
+	statusCodeFirstNumber := string((strconv.Itoa(resp.StatusCode)[0]))
+	if statusCodeFirstNumber != "2" {
+		fmt.Printf("Page returned %v - no content returned.\n", resp.StatusCode)
+		return
+	}
+
 	if action == pageActionSavePage {
 		pageDataToWrite = getPageHTML(url)
-		writePageContentsToFile(url, pageDataToWrite, action)
+		if len(pageDataToWrite) > 0 {
+			writePageContentsToFile(url, pageDataToWrite, action)
+		}
 	} else {
 		pageDataCollection = loopGetPage(resp.Body, action)
 		pageDataToWrite := strings.Join(pageDataCollection, "\n")

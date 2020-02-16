@@ -15,7 +15,7 @@ func pageData(url string) []byte {
 	}
 	defer resp.Body.Close()
 
-	pageResponseData, err := ioutil.ReadAll(resp.Body)
+	pageResponseData, _ := ioutil.ReadAll(resp.Body)
 
 	return pageResponseData
 }
