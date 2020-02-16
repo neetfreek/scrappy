@@ -24,6 +24,7 @@ func SetupConstants() {
 func makeHTMLTags() {
 	HTMLTags.tagHyperLink = "tagHyperLink"
 	HTMLTags.tagBlockQuote = "tagBlockQuote"
+	HTMLTags.tagBold = "tagBold"
 	HTMLTags.tagBody = "tagBody"
 	HTMLTags.tagButton = "tagButton"
 	HTMLTags.tagCite = "tagCite"
@@ -100,6 +101,7 @@ func makeHTMLMap() map[string]string {
 	HTMLMap["a"] = HTMLTags.tagHyperLink
 	HTMLMap["blockquote"] = HTMLTags.tagBlockQuote
 	HTMLMap["body"] = HTMLTags.tagBody
+	HTMLMap["b"] = HTMLTags.tagBold
 	HTMLMap["button"] = HTMLTags.tagButton
 	HTMLMap["cite"] = HTMLTags.tagCite
 	HTMLMap["code"] = HTMLTags.tagCode
@@ -176,6 +178,7 @@ type tags struct {
 	tagHyperLink           string
 	tagBlockQuote          string
 	tagBody                string
+	tagBold                string
 	tagButton              string
 	tagCite                string
 	tagCode                string
