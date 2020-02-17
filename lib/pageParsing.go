@@ -113,5 +113,5 @@ func getPageImagesOrLinks(token html.Token, tag, action string) string {
 }
 
 func getPageHTML(url string) string {
-	return pageString(url)
+	return pageBodyString(url)
 }

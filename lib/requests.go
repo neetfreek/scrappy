@@ -32,16 +32,16 @@ func pageBody(url string) []byte {
 	return pageResponseData
 }
 
-// pageString returns page body string from response
-func pageString(url string) string {
+// pageBodyString returns page body string from response
+func pageBodyString(url string) string {
 	p := bluemonday.UGCPolicy()
 
-	pageResponseData := pageBody(url)
-	buffer := bytesBuffer(pageResponseData)
+	pageBody := pageBody(url)
+	buffer := bytesBuffer(pageBody)
 
 	pageResponseString := buffer.String()
 
-	pageResponseStringSanitized := p.Sanitize(pageResponseString)
+	pageBodyStringSanitised := p.Sanitize(pageResponseString)
 
-	return pageResponseStringSanitized
+	return pageBodyStringSanitised
 }

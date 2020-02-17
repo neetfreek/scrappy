@@ -19,11 +19,11 @@ func bytesBuffer(responseData []byte) bytes.Buffer {
 	return buffer
 }
 
-func writePageContentsToFile(url, pageString, action string) {
+func writePageContentsToFile(url, pageBodyString, action string) {
 	nameDirectoryParent := getNameDirectoryFromURL(url, "")
 	nameDirectoryContent := nameDirectoryParent + "/" + getNameDirectoryFromURL(url, action)
 	nameFile := getNameFileFromURL(url)
-	writeToFile(nameDirectoryContent, nameFile, pageString)
+	writeToFile(nameDirectoryContent, nameFile, pageBodyString)
 }
 
 func writeToFile(nameDirectory, nameFile, content string) {
