@@ -22,7 +22,7 @@ func bytesBuffer(responseData []byte) bytes.Buffer {
 func writePageContentsToFile(url, pageString, action string) {
 	nameDirectoryParent := getNameDirectoryFromURL(url, "")
 	nameDirectoryContent := nameDirectoryParent + "/" + getNameDirectoryFromURL(url, action)
-	nameFile := getNameFileFromURL(url, typeFile, action)
+	nameFile := getNameFileFromURL(url)
 	writeToFile(nameDirectoryContent, nameFile, pageString)
 }
 
@@ -38,21 +38,16 @@ func writeToFile(nameDirectory, nameFile, content string) {
 }
 
 func getNameDirectoryFromURL(url, action string) string {
-	nameByHost := regexp.MustCompile("(.*)[/]")
-	matchNameByHost := nameByHost.FindStringSubmatch(url)
-	matchString := matchNameByHost[0]
-	matchStringDelimited := strings.Split(matchString, "/")
-	name := ""
+	nameSplit := strings.Split(url, "//")
+	name := nameSplit[len(nameSplit)-1]
 	suffix := getNameSuffixByAction(action)
-	name = matchStringDelimited[2]
-
 	if name == "" {
 		name = "Untitled_" + timeStamp()
 	}
 	return name + suffix
 }
 
-func getNameFileFromURL(url, fileOrDir, typeContent string) string {
+func getNameFileFromURL(url string) string {
 	indexStartNamePage := strings.LastIndex(url, "/") + 1
 	namePage := url[indexStartNamePage:len(url)]
 	// Omit backslash at end of url
