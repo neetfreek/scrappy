@@ -8,7 +8,8 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
-func pageData(url string) []byte {
+func pageBody(url string) []byte {
+
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
@@ -24,7 +25,7 @@ func pageData(url string) []byte {
 func pageString(url string) string {
 	p := bluemonday.UGCPolicy()
 
-	pageResponseData := pageData(url)
+	pageResponseData := pageBody(url)
 	buffer := bytesBuffer(pageResponseData)
 
 	pageResponseString := buffer.String()
