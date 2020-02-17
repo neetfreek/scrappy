@@ -355,5 +355,6 @@ var suffixHTML = "_htmlContent"
 // Parameters
 var typeDirectory = "directory"
 var typeFile = "file"
+var goClient = "Go-http-client/1.1"
 
 var imageFormats = []string{".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".pbm", ".pgm", ".ppm", "pnm", ".png", ".svg", ".webp"}
