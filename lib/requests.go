@@ -8,25 +8,25 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
-func pageHeader(url string) http.Header {
+func pageResponse(url string) *http.Response {
 	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
+
+	return resp
+}
+
+func pageHeader(url string) http.Header {
+	resp := pageResponse(url)
 	pageResponseHeader := resp.Header
 
 	return pageResponseHeader
 }
 
 func pageBody(url string) []byte {
-
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
+	resp := pageResponse(url)
 	pageResponseData, _ := ioutil.ReadAll(resp.Body)
 
 	return pageResponseData
