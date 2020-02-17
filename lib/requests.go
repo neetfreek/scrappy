@@ -20,6 +20,7 @@ func pageResponse(url string) *http.Response {
 
 func pageHeader(url string) http.Header {
 	resp := pageResponse(url)
+	defer resp.Body.Close()
 	pageResponseHeader := resp.Header
 
 	return pageResponseHeader
@@ -27,6 +28,7 @@ func pageHeader(url string) http.Header {
 
 func pageBody(url string) []byte {
 	resp := pageResponse(url)
+	defer resp.Body.Close()
 	pageResponseData, _ := ioutil.ReadAll(resp.Body)
 
 	return pageResponseData
