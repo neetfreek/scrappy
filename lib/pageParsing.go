@@ -104,7 +104,7 @@ func getPageImagesOrLinks(token html.Token, tag, action string) string {
 		for _, attr := range attributesSplit {
 			if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) && action == pageActionSaveImageLinks {
 				return attr
-			} else if strings.Contains(attr, "href") && action == pageActionSaveLinks {
+			} else if strings.Contains(attr, "href") && attributeContainsLink(attr) && action == pageActionSaveLinks {
 				return attr
 			}
 		}

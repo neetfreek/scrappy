@@ -98,6 +98,13 @@ func attributeContainsImage(attribute string) bool {
 	return false
 }
 
+func attributeContainsLink(attribute string) bool {
+	if strings.Contains(attribute, "http") {
+		return true
+	}
+	return false
+}
+
 func removeCharacters(stringToStrip, charToRemove string) string {
 	stringCleaned := strings.ReplaceAll(stringToStrip, charToRemove, "")
 
