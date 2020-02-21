@@ -24,13 +24,13 @@ func GetPageContent(url, action string) {
 	}
 
 	if action == pageActionSavePage {
-		pageDataToWrite := getPageHTML(resp)
-		if len(pageDataToWrite) > 0 {
-			writePageContentsToFile(url, pageDataToWrite, action)
-		}
+		pageDataToWrite = getPageHTML(resp)
 	} else {
 		pageDataCollection = loopGetPage(resp.Body, action)
 		pageDataToWrite = strings.Join(pageDataCollection, "\n")
+	}
+
+	if len(pageDataToWrite) > 0 {
 		writePageContentsToFile(url, pageDataToWrite, action)
 	}
 }
