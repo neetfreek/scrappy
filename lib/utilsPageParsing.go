@@ -47,12 +47,13 @@ func bytesBuffer(responseData []byte) bytes.Buffer {
 
 // Helpers for get directory, file names
 func getNameDirectoryFromURL(url, action string) string {
-	nameSplit := strings.Split(url, "//")
+	nameSplit := strings.Split(url, doubleSlash)
 	name := nameSplit[len(nameSplit)-1]
-	suffix := getNameSuffixByAction(action)
 	if name == "" {
-		name = "Untitled_" + timeStamp()
+		name = pageUntitled + timeStamp()
 	}
+	suffix := getNameSuffixByAction(action)
+
 	return name + suffix
 }
 
@@ -73,20 +74,20 @@ func getNameSuffixByAction(action string) string {
 }
 
 func getNameFileFromURL(url string) string {
-	indexStartNamePage := strings.LastIndex(url, "/") + 1
+	indexStartNamePage := strings.LastIndex(url, slash) + 1
 	namePage := url[indexStartNamePage:len(url)]
 	// Omit backslash at end of url
 	if indexStartNamePage == len(url) {
 		url := url[0 : len(url)-1]
-		indexStartNamePage = strings.LastIndex(url, "/") + 1
+		indexStartNamePage = strings.LastIndex(url, slash) + 1
 		namePage = url[indexStartNamePage:len(url)]
 	}
-
-	nameTimeStamped := namePage + "_" + timeStamp()
+	var nameTimeStamped []string
+	nameTimeStamped = append(nameTimeStamped, namePage, underscore, timeStamp())
 	if namePage == "" {
-		nameTimeStamped = "Untitled_" + timeStamp()
+		nameTimeStamped = append(nameTimeStamped, pageUntitled, timeStamp())
 	}
-	return nameTimeStamped
+	return strings.Join(nameTimeStamped, "")
 }
 
 func timeStamp() string {
@@ -97,19 +98,32 @@ func timeStamp() string {
 // Helpers for write data
 func writePageContentsToFile(url, pageBodyString, action string) {
 	nameDirectoryParent := getNameDirectoryFromURL(url, "")
-	nameDirectoryContent := nameDirectoryParent + "/" + getNameDirectoryFromURL(url, action)
+	var nameDirectoryContent []string
+	nameDirectoryContent = append(nameDirectoryContent, nameDirectoryParent, slash, getNameDirectoryFromURL(url, action))
 	nameFile := getNameFileFromURL(url)
-	writeToFile(nameDirectoryContent, nameFile, pageBodyString)
+	writeToFile(fileInformation(url), strings.Join(nameDirectoryContent, ""), nameFile, pageBodyString)
 }
 
-func writeToFile(nameDirectory, nameFile, content string) {
+func fileInformation(url string) string {
+	var fileInformation []string
+	fileInformation = append(fileInformation,
+		pageURL, delimiter, url, newLine,
+		pageAccessed, delimiter, timeStamp(), newLine, newLine)
+
+	return strings.Join(fileInformation, "")
+}
+
+func writeToFile(url, nameDirectory, nameFile, content string) {
 	os.MkdirAll(nameDirectory, os.ModePerm)
-	file, err := os.Create("./" + nameDirectory + "/" + nameFile)
+	var filePath []string
+	filePath = append(filePath, thisDirectoryDelimiter, nameDirectory, slash, nameFile)
+	file, err := os.Create(strings.Join(filePath, ""))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 
+	file.WriteString(url)
 	file.WriteString(content)
 }
 
