@@ -16,6 +16,7 @@ func GetPageContent(url, action string) {
 	pageDataCollection := []string{}
 	pageDataToWrite := ""
 	resp := pageResponse(url)
+	defer resp.Body.Close()
 
 	statusCodeFirstNumber := string((strconv.Itoa(resp.StatusCode)[0]))
 	if statusCodeFirstNumber != "2" {
