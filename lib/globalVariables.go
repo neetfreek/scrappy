@@ -346,7 +346,20 @@ var pageActionSaveLinks = "Save page links to file (.txt)"
 var pageActionSavePage = "Save page to file (.html)"
 var pageActionSaveImageLinks = "Save page image links to directory"
 
-// Directory, file name siffixes
+// File information
+var pageURL = "Page URL"
+var pageAccessed = "Page Accessed"
+var pageUntitled = "Untitled_"
+
+// Common strings
+var delimiter = ": "
+var doubleSlash = "//"
+var slash = "/"
+var newLine = "\n"
+var thisDirectoryDelimiter = "./"
+var underscore = "_"
+
+// Directory, file name suffixes
 var suffixImageLinks = "_linksImage"
 var suffixLinks = "_links"
 var suffixText = "_textContent"
