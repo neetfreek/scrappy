@@ -3,6 +3,7 @@ package lib
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 	"strings"
@@ -10,16 +11,11 @@ import (
 	"golang.org/x/net/html"
 )
 
-// GetPage gets different content from provided url depending on action
-func GetPage(url, action string) {
+// GetPageContent gets different content from provided url depending on action
+func GetPageContent(url, action string) {
 	pageDataCollection := []string{}
 	pageDataToWrite := ""
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Printf("%v, %v\n", messageNoPage, url)
-		return
-	}
-	defer resp.Body.Close()
+	resp := pageResponse(url)
 
 	statusCodeFirstNumber := string((strconv.Itoa(resp.StatusCode)[0]))
 	if statusCodeFirstNumber != "2" {
@@ -28,13 +24,13 @@ func GetPage(url, action string) {
 	}
 
 	if action == pageActionSavePage {
-		pageDataToWrite = getPageHTML(url)
+		pageDataToWrite := getPageHTML(resp)
 		if len(pageDataToWrite) > 0 {
 			writePageContentsToFile(url, pageDataToWrite, action)
 		}
 	} else {
 		pageDataCollection = loopGetPage(resp.Body, action)
-		pageDataToWrite := strings.Join(pageDataCollection, "\n")
+		pageDataToWrite = strings.Join(pageDataCollection, "\n")
 		writePageContentsToFile(url, pageDataToWrite, action)
 	}
 }
@@ -112,6 +108,8 @@ func getPageImagesOrLinks(token html.Token, tag, action string) string {
 	return ""
 }
 
-func getPageHTML(url string) string {
-	return pageBodyString(url)
+func getPageHTML(resp *http.Response) string {
+	pageResponseData, _ := ioutil.ReadAll(resp.Body)
+	pageBodyString := pageBodyString(pageResponseData)
+	return pageBodyString
 }

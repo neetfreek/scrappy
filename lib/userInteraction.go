@@ -29,7 +29,7 @@ func UserActionPage() {
 		ExitRequested = true
 	} else {
 		userOptionPageURL := getUserPageOption()
-		GetPage(userOptionPageURL, userOptionCommand)
+		GetPageContent(userOptionPageURL, userOptionCommand)
 	}
 
 }

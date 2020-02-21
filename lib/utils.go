@@ -8,7 +8,18 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/microcosm-cc/bluemonday"
 )
+
+func pageBodyString(pageBody []byte) string {
+	p := bluemonday.UGCPolicy()
+	buffer := bytesBuffer(pageBody)
+	pageResponseString := buffer.String()
+	pageBodyStringSanitised := p.Sanitize(pageResponseString)
+
+	return pageBodyStringSanitised
+}
 
 func bytesBuffer(responseData []byte) bytes.Buffer {
 	var buffer bytes.Buffer
