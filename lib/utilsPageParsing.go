@@ -10,23 +10,7 @@ import (
 	"github.com/microcosm-cc/bluemonday"
 )
 
-// Helpers for get page content
-func attributeContainsImage(attribute string) bool {
-	for _, imageFormat := range imageFormats {
-		if strings.Contains(attribute, imageFormat) {
-			return true
-		}
-	}
-	return false
-}
-
-func attributeContainsLink(attribute string) bool {
-	if strings.Contains(attribute, "http") {
-		return true
-	}
-	return false
-}
-
+// Helpers for process body
 func pageBodyString(pageBody []byte) string {
 	p := bluemonday.UGCPolicy()
 	buffer := bytesBuffer(pageBody)
@@ -36,10 +20,10 @@ func pageBodyString(pageBody []byte) string {
 	return pageBodyStringSanitised
 }
 
-func bytesBuffer(responseData []byte) bytes.Buffer {
+func bytesBuffer(byteArray []byte) bytes.Buffer {
 	var buffer bytes.Buffer
-	for sliceByte := range responseData {
-		buffer.WriteString(string(responseData[sliceByte]))
+	for sliceByte := range byteArray {
+		buffer.WriteString(string(byteArray[sliceByte]))
 	}
 
 	return buffer
