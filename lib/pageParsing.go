@@ -12,8 +12,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-// GetPageContent gets different content from provided url depending on action
-func GetPageContent(url, action string) {
+func getPageContent(url, action string) {
 	pageDataCollection := []string{}
 	pageDataToWrite := ""
 	resp := pageResponse(url)
