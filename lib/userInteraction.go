@@ -35,10 +35,10 @@ func userMenuInput(menuMap []string) string {
 	for option == "" {
 		for userInputInt < 0 || userInputInt > len(menuMap)-1 {
 			printMenuOptions(menuMap)
-		fmt.Print(messageChoosePageAction)
-		userInput = getUserInputOption()
-		userInputInt = stringToInt(userInput) - 1
-	}
+			fmt.Print(messageChoosePageAction)
+			userInput = getUserInputOption()
+			userInputInt = stringToInt(userInput) - 1
+		}
 		option = menuMap[userInputInt]
 	}
 
@@ -71,6 +71,8 @@ func startActionSite(option string) {
 	if option == actionMenuMain {
 		MenuMain()
 	} else {
+		pageURL := getUserPageOption()
+		crawlSite(pageURL)
 	}
 }
 
