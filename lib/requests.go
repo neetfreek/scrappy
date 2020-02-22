@@ -35,9 +35,13 @@ func pageResponse(url string) *http.Response {
 }
 
 func robotsTxt(url string) {
-	resp := pageResponse(url)
-	defer resp.Body.Close()
+	var pageDomainStringArray = []string{}
+	pageDomain := pageDomain(url)
+	pageDomainStringArray = append(pageDomainStringArray, pageDomain, addressRobotsTxt)
+	addressRobotsTxt := strings.Join(pageDomainStringArray, "")
 
+	resp := pageResponse(addressRobotsTxt)
+	defer resp.Body.Close()
 	data, err := robotstxt.FromResponse(resp)
 	if err != nil {
 		log.Fatal(err)
@@ -56,6 +60,5 @@ func pageDomain(url string) string {
 	pageDomain := re.FindAllStringSubmatch(url, -1)
 	pageDomainStringArray := []string{}
 	pageDomainStringArray = append(pageDomainStringArray, pageDomain[0][0], delimiterDomain, pageDomain[1][0])
-	fmt.Println(pageDomainStringArray)
 	return strings.Join(pageDomainStringArray, "")
 }

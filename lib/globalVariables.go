@@ -352,6 +352,7 @@ var pageAccessed = "Page Accessed"
 var pageUntitled = "Untitled_"
 
 // Common strings
+var addressRobotsTxt = "/robots.txt"
 var delimiter = ": "
 var delimiterDomain = "://"
 var doubleSlash = "//"
