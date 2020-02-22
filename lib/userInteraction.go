@@ -24,15 +24,34 @@ func UserActionPage() {
 		userInputInt = stringToInt(userInput) - 1
 	}
 	option := InputOptionsMap[userInputInt]
+	determineUserAction(option)
+}
 
-	if option == messageActionExit {
+func determineUserAction(option string) {
+	fmt.Println(option)
+	switch option {
+	case pageActionSaveImageLinks:
+		startGetPageContent(option)
+		break
+	case pageActionSaveLinks:
+		startGetPageContent(option)
+		break
+	case pageActionSavePage:
+		startGetPageContent(option)
+		break
+	case pageActionSaveText:
+		startGetPageContent(option)
+		break
+	case messageActionExit:
 		ExitRequested = true
-	} else {
+		break
+	}
+}
+
+func startGetPageContent(option string) {
 		pageURL := getUserPageOption()
 		getPageContent(pageURL, option)
 	}
-
-}
 
 func showUserInputOptions() {
 	fmt.Println()
