@@ -5,6 +5,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -99,10 +100,17 @@ func getPageImagesOrLinks(token html.Token, tag, action string) string {
 		attributesSplit := strings.Split(attributesToSplit, " ")
 
 		for _, attr := range attributesSplit {
+			attrContent := ""
+			re := regexp.MustCompile(`(?s)\"(.*)\"`)
+			getURL := re.FindAllStringSubmatch(attr, -1)
+			if len(getURL) > 0 {
+				attrContent = getURL[0][1]
+			}
+
 			if strings.Contains(attr, "src") || strings.Contains(attr, "href") && attributeContainsImage(attr) && action == pageActionSaveImageLinks {
-				return attr
+				return attrContent
 			} else if strings.Contains(attr, "href") && attributeContainsLink(attr) && action == pageActionSaveLinks {
-				return attr
+				return attrContent
 			}
 		}
 	}
