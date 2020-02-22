@@ -3,6 +3,7 @@ package lib
 import (
 	"log"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/temoto/robotstxt"
@@ -50,11 +51,11 @@ func robotsTxt(url string) {
 	}
 }
 
-func pageResponse(url string) *http.Response {
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	return resp
+func pageDomain(url string) string {
+	re := regexp.MustCompile(`([^@\/\n]+@)?([^:\/\n]+)`)
+	pageDomain := re.FindAllStringSubmatch(url, -1)
+	pageDomainStringArray := []string{}
+	pageDomainStringArray = append(pageDomainStringArray, pageDomain[0][0], delimiterDomain, pageDomain[1][0])
+	fmt.Println(pageDomainStringArray)
+	return strings.Join(pageDomainStringArray, "")
 }

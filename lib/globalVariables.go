@@ -353,6 +353,7 @@ var pageUntitled = "Untitled_"
 
 // Common strings
 var delimiter = ": "
+var delimiterDomain = "://"
 var doubleSlash = "//"
 var slash = "/"
 var newLine = "\n"
