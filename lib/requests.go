@@ -50,6 +50,8 @@ func robotsTxt(url string) {
 	userAgentGroup := data.FindGroup(goClient)
 	if userAgentGroup != nil {
 		if userAgentGroup.Test("/all") {
+			// crawlDelayInt64 := int64(userAgentGroup.CrawlDelay)
+			// fmt.Printf("userAgentGroup.CrawlDelay: %d", crawlDelayInt64)
 			// TODO: Define collection of UGs to test against
 		}
 	}
