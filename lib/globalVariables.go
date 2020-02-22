@@ -1,5 +1,11 @@
 package lib
 
+// SetupConstants initialises HTMLMap and HTMLTags
+func SetupConstants() {
+	makeHTMLTags()
+	makeHTMLMap()
+}
+
 // HTMLTags instance contains global tag string literal values
 var HTMLTags tags
 
@@ -28,11 +34,58 @@ var InputOptionsMapPage = []string{
 	actionMenuMain,
 }
 
-// SetupConstants initialises HTMLMap and HTMLTags
-func SetupConstants() {
-	makeHTMLTags()
-	makeHTMLMap()
-}
+// ExitRequested handles whether app loop terminates
+var ExitRequested = false
+
+// Standard use messages to player
+var messageGreeting = "Welcome to scrappy!"
+var messageChoosePageAction = "Choose an action: "
+var messageChoosePageURL = "Enter a URL: "
+var messageNoPage = "Could not find page"
+var messageNotURLFormat = "URL format error:"
+
+// Top-level action input options
+var actionPageContent = "Get page content"
+var actionSiteContent = "Get site content"
+var actionMenuMain = "Return to main menu"
+var actionExit = "Exit application"
+
+// Site action input options
+var siteActionGetLinks = "Get all site links"
+
+// Page action input options
+var pageActionSaveText = "Save page text content to file (.txt)"
+var pageActionSaveLinks = "Save page links to file (.txt)"
+var pageActionSavePage = "Save page to file (.html)"
+var pageActionSaveImageLinks = "Save page image links to directory"
+
+// File information
+var pageURL = "Page URL"
+var pageAccessed = "Page Accessed"
+var pageUntitled = "Untitled_"
+
+// Common strings
+var addressRobotsTxt = "/robots.txt"
+var delimiter = ": "
+var delimiterDomain = "://"
+var doubleSlash = "//"
+var slash = "/"
+var newLine = "\n"
+var thisDirectoryDelimiter = "./"
+var underscore = "_"
+
+// Directory, file name suffixes
+var suffixImageLinks = "_linksImage"
+var suffixLinks = "_links"
+var suffixText = "_textContent"
+var suffixHTML = "_htmlContent"
+
+// Parameters
+var typeDirectory = "directory"
+var typeFile = "file"
+var goClient = "Go-http-client/1.1"
+
+var imageFormats = []string{".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".pbm", ".pgm", ".ppm", "pnm", ".png", ".svg", ".webp"}
 
 func makeHTMLTags() {
 	HTMLTags.tagAbbreviation = "tagAbbreviation"
@@ -342,55 +395,3 @@ type tags struct {
 	tagVariable               string
 	tagVideo                  string
 }
-
-// ExitRequested handles whether app loop terminates
-var ExitRequested = false
-
-// Standard use messages to player
-var messageGreeting = "Welcome to scrappy!"
-var messageChoosePageAction = "Choose an action: "
-var messageChoosePageURL = "Enter a URL: "
-var messageNoPage = "Could not find page"
-
-// Top-level action input options
-var actionPageContent = "Get page content"
-var actionSiteContent = "Get site content"
-var actionMenuMain = "Return to main menu"
-var actionExit = "Exit application"
-
-// Site action input options
-var siteActionGetLinks = "Get all site links"
-
-// Page action input options
-var pageActionSaveText = "Save page text content to file (.txt)"
-var pageActionSaveLinks = "Save page links to file (.txt)"
-var pageActionSavePage = "Save page to file (.html)"
-var pageActionSaveImageLinks = "Save page image links to directory"
-
-// File information
-var pageURL = "Page URL"
-var pageAccessed = "Page Accessed"
-var pageUntitled = "Untitled_"
-
-// Common strings
-var addressRobotsTxt = "/robots.txt"
-var delimiter = ": "
-var delimiterDomain = "://"
-var doubleSlash = "//"
-var slash = "/"
-var newLine = "\n"
-var thisDirectoryDelimiter = "./"
-var underscore = "_"
-
-// Directory, file name suffixes
-var suffixImageLinks = "_linksImage"
-var suffixLinks = "_links"
-var suffixText = "_textContent"
-var suffixHTML = "_htmlContent"
-
-// Parameters
-var typeDirectory = "directory"
-var typeFile = "file"
-var goClient = "Go-http-client/1.1"
-
-var imageFormats = []string{".jpg", ".jpeg", ".tiff", ".gif", ".bmp", ".pbm", ".pgm", ".ppm", "pnm", ".png", ".svg", ".webp"}
