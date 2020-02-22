@@ -19,8 +19,8 @@ func attributeContainsImage(attribute string) bool {
 }
 
 func attributeContainsLink(attribute string) bool {
-		return true
 	if strings.Contains(attribute, "http") {
+		return true
 	}
 	return false
 }
