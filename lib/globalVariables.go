@@ -6,13 +6,26 @@ var HTMLTags tags
 // HTMLMap maps html tag node values to global string literals
 var HTMLMap map[string]string
 
-// InputOptionsMap maps user input options TODO: CHANGE TO ARRAY FOR ORDERED ITERATING
-var InputOptionsMap = []string{
+// InputOptionsMapMain maps user input to top-level application options
+var InputOptionsMapMain = []string{
+	actionPageContent,
+	actionSiteContent,
+	actionExit,
+}
+
+// InputOptionsMapSite maps user input to site-content options
+var InputOptionsMapSite = []string{
+	siteActionGetLinks,
+	actionMenuMain,
+}
+
+// InputOptionsMapPage maps user input options to page-content options
+var InputOptionsMapPage = []string{
 	pageActionSaveText,
 	pageActionSaveLinks,
 	pageActionSavePage,
 	pageActionSaveImageLinks,
-	messageActionExit,
+	actionMenuMain,
 }
 
 // SetupConstants initialises HTMLMap and HTMLTags
@@ -338,7 +351,15 @@ var messageGreeting = "Welcome to scrappy!"
 var messageChoosePageAction = "Choose an action: "
 var messageChoosePageURL = "Enter a URL: "
 var messageNoPage = "Could not find page"
-var messageActionExit = "Exit application"
+
+// Top-level action input options
+var actionPageContent = "Get page content"
+var actionSiteContent = "Get site content"
+var actionMenuMain = "Return to main menu"
+var actionExit = "Exit application"
+
+// Site action input options
+var siteActionGetLinks = "Get all site links"
 
 // Page action input options
 var pageActionSaveText = "Save page text content to file (.txt)"

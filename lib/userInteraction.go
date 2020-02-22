@@ -9,56 +9,78 @@ import (
 // GreetUser on application start
 func GreetUser() {
 	fmt.Println(messageGreeting)
-	fmt.Println()
 }
 
-// UserActionPage handles users actions regard HTTP pages
-func UserActionPage() {
+// MenuMain represents top-level menu for user application options
+func MenuMain() {
+	option := userMenuInput(InputOptionsMapMain)
+	startActionMain(option)
+}
+
+func menuSite() {
+	option := userMenuInput(InputOptionsMapSite)
+	startActionSite(option)
+}
+
+func menuPage() {
+	option := userMenuInput(InputOptionsMapPage)
+	startActionPage(option)
+}
+
+func userMenuInput(menuMap []string) string {
+	option := ""
 	userInput := ""
 	userInputInt := -1
 
-	for userInputInt < 0 || userInputInt > len(InputOptionsMap)-1 {
-		showUserInputOptions()
+	for option == "" {
+		for userInputInt < 0 || userInputInt > len(menuMap)-1 {
+			printMenuOptions(menuMap)
 		fmt.Print(messageChoosePageAction)
 		userInput = getUserInputOption()
 		userInputInt = stringToInt(userInput) - 1
 	}
-	option := InputOptionsMap[userInputInt]
-	determineUserAction(option)
+		option = menuMap[userInputInt]
+	}
+
+	return option
 }
 
-func determineUserAction(option string) {
-	fmt.Println(option)
+func printMenuOptions(menuMap []string) {
+	fmt.Println()
+	for counter := range menuMap {
+		fmt.Printf("%v. %v\n", counter+1, menuMap[counter])
+	}
+	fmt.Println()
+}
+
+func startActionMain(option string) {
 	switch option {
-	case pageActionSaveImageLinks:
-		startGetPageContent(option)
+	case actionPageContent:
+		menuPage()
 		break
-	case pageActionSaveLinks:
-		startGetPageContent(option)
+	case actionSiteContent:
+		menuSite()
 		break
-	case pageActionSavePage:
-		startGetPageContent(option)
-		break
-	case pageActionSaveText:
-		startGetPageContent(option)
-		break
-	case messageActionExit:
+	case actionExit:
 		ExitRequested = true
 		break
 	}
 }
 
-func startGetPageContent(option string) {
+func startActionSite(option string) {
+	if option == actionMenuMain {
+		MenuMain()
+	} else {
+	}
+}
+
+func startActionPage(option string) {
+	if option == actionMenuMain {
+		MenuMain()
+	} else {
 		pageURL := getUserPageOption()
 		getPageContent(pageURL, option)
 	}
-
-func showUserInputOptions() {
-	fmt.Println()
-	for counter := range InputOptionsMap {
-		fmt.Printf("%v. %v\n", counter+1, InputOptionsMap[counter])
-	}
-	fmt.Println()
 }
 
 func getUserInputOption() string {

@@ -12,6 +12,6 @@ func main() {
 
 func appLoop() {
 	for !lib.ExitRequested {
-		lib.UserActionPage()
+		lib.MenuMain()
 	}
 }
