@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"regexp"
@@ -28,7 +29,8 @@ func attributeContainsLink(attribute string) bool {
 func pageResponse(url string) *http.Response {
 	resp, err := http.Get(url)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Printf("%v %v", messageNotURLFormat, err)
+		MenuMain()
 	}
 
 	return resp
