@@ -3,8 +3,8 @@ package lib
 /*==================================================================================*
 * Examine pages, sites and retrieve data from multiple pages						*
 *===================================================================================*
-* The crawlSite routine goes through link and host URL looking for link URLs to		*
-*	other pages within the host.													*
+* The crawlSite routine goes through link and domain URL looking for link URLs to		*
+*	other pages within the domain.													*
 *	1) Link URLs are put into linksToDoCurrent, from where each are in turn crawled	*
 *		for link URLs they contain.													*
 *	2) URLS not alread in any lists are added to linksToDoNext.						*

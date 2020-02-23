@@ -6,7 +6,7 @@ package lib
 * Many variables are defined here as CONSTANTS to allow for re-use, to prevent the 	*
 *	use of "magic" numbers and strings, and to facilitate for easy modifications.	*
 * HTML tags are stored in the HTMLTags struct, and are accessed from here for,		*
-*	e.g., comparing their values to those returned in accessing page HTML			*
+*	e.g., comparing their values to those returned in accessing page HTML.			*
 * HTML tags are mapped to CONSTANT values for easier use.							*
 * Collections of menu options are stored as CONSTANT variables, which reflect both	*
 *	the options presented to the user in menus as well as the internal values used	*
