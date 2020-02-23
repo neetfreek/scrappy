@@ -129,3 +129,21 @@ func getPageHTML(resp *http.Response) string {
 	pageBodyString := pageBodyString(pageResponseData)
 	return pageBodyString
 }
+
+// Helper functions
+
+func attributeContainsImage(attribute string) bool {
+	for _, imageFormat := range imageFormats {
+		if strings.Contains(attribute, imageFormat) {
+			return true
+		}
+	}
+	return false
+}
+
+func attributeContainsLink(attribute string) bool {
+	if strings.Contains(attribute, "http") {
+		return true
+	}
+	return false
+}

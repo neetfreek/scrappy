@@ -38,6 +38,16 @@ func menuPage() {
 	startActionPage(option)
 }
 
+func printMenuOptions(menuMap []string) {
+	fmt.Println()
+	for counter := range menuMap {
+		fmt.Printf("%v. %v\n", counter+1, menuMap[counter])
+	}
+	fmt.Println()
+}
+
+// User input functions
+
 func userMenuInput(menuMap []string) string {
 	option := ""
 	userInput := ""
@@ -54,14 +64,6 @@ func userMenuInput(menuMap []string) string {
 	}
 
 	return option
-}
-
-func printMenuOptions(menuMap []string) {
-	fmt.Println()
-	for counter := range menuMap {
-		fmt.Printf("%v. %v\n", counter+1, menuMap[counter])
-	}
-	fmt.Println()
 }
 
 func getUserInputOption() string {
