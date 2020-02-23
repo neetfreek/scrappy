@@ -1,5 +1,11 @@
 package lib
 
+/*==================================================================================*
+* Collection of helpers functions for user interaction								*
+*===================================================================================*
+* Functions relate to preparing user input for later use in other functions.		*
+*===================================================================================*/
+
 import (
 	"regexp"
 	"strconv"

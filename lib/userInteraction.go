@@ -1,5 +1,14 @@
 package lib
 
+/*==================================================================================*
+* Interaction with user, including printing menus, and getting, processing input	*
+*===================================================================================*
+* MenuMain represents entry-point into menu routine. Options printed represent		*
+*	global CONSTANT variables stored in slices.										*
+* User input selections are represented by the same CONSTANT variables presented	*
+*	in menu printing.																*
+*===================================================================================*/
+
 import (
 	"bufio"
 	"fmt"
@@ -10,6 +19,8 @@ import (
 func GreetUser() {
 	fmt.Println(messageGreeting)
 }
+
+// Menu functions
 
 // MenuMain represents top-level menu for user application options
 func MenuMain() {

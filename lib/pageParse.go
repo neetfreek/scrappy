@@ -1,5 +1,13 @@
 package lib
 
+/*==================================================================================*
+* Get page content (image and site links, text and HTML) from site HTML structure	*
+*===================================================================================*
+* The getPageContent routine handles calling appropriate functions for getting		*
+*	different types of page data based on received user action input.				*
+* Content is saved to text (.txt) files in the root directory.						*
+*===================================================================================*/
+
 import (
 	"fmt"
 	"io"

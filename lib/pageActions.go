@@ -1,5 +1,14 @@
 package lib
 
+/*==================================================================================*
+* Call functions handling page, site actions depending on user input				*
+*===================================================================================*
+* Functions are called from different menu selections made by user.					*
+* Functions handle starting routines based on menu selections made by the user.		*
+* Options are represented as CONSTANTS mapped to the options displayed to the user	*
+*	in menus.																		*
+*===================================================================================*/
+
 func startActionMain(option string) {
 	switch option {
 	case actionPageContent:

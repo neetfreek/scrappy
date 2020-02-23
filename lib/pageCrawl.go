@@ -1,5 +1,20 @@
 package lib
 
+/*==================================================================================*
+* Examine pages, sites and retrieve data from multiple pages						*
+*===================================================================================*
+* The crawlSite routine goes through link and host URL looking for link URLs to		*
+*	other pages within the host.													*
+*	1) Link URLs are put into linksToDoCurrent, from where each are in turn crawled	*
+*		for link URLs they contain.													*
+*	2) URLS not alread in any lists are added to linksToDoNext.						*
+*	3) Once crawled, URLS are placed into linksDone.								*
+*	4) Once all linksToDoCurrent URLs have been crawled, the list's contents are	*
+*		replaced by those of linksToDoNext, and linksToDoNext is cleared.			*
+*	5) The process is complete when there are no more links from linksToDoNext to	*
+*		put into linksToDoCurrent.													*
+*===================================================================================*/
+
 import (
 	"fmt"
 	"strings"
@@ -40,6 +55,8 @@ func crawPageForLinks() {
 		crawPageForLinks()
 	}
 }
+
+// Helper functions
 
 func addToLinksToDoNext(pageLinks []string, pageDomain string) {
 	for _, link := range pageLinks {

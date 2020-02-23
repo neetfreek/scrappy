@@ -1,5 +1,14 @@
 package lib
 
+/*==================================================================================*
+* HTTP-request and -response-related functionalities								*
+*===================================================================================*
+* Contains functionality directly related to HTTP requests, receiving HTTP			*
+*	responses.																		*
+* Contains other top-level functionality like determining the host URL and parsing.	*
+*	robots.txt files for crawler permissions and behaviour.							*
+*===================================================================================*/
+
 import (
 	"fmt"
 	"log"

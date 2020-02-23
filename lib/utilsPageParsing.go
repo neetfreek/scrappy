@@ -1,5 +1,14 @@
 package lib
 
+/*==================================================================================*
+* Collection of helpers functions for page parsing									*
+*===================================================================================*
+* Helper functions divided into several sections:									*
+*	1) Processing HTTP response body.												*
+*	2) Returning appropriate directory, file names for saving data.					*
+*	3) Writing data files to local storage in root folder.							*
+*===================================================================================*/
+
 import (
 	"bytes"
 	"log"
