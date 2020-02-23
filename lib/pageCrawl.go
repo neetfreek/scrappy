@@ -25,16 +25,13 @@ func crawlSite(url string) {
 
 func crawPageForLinks() {
 	for counter, link := range linksToDoCurrent {
-		fmt.Printf("START %v: %v\n", counter, linksToDoCurrent[0])
-		fmt.Printf("LINKS DONE: %v\n", len(linksDone))
-		resp := pageResponse(linksToDoCurrent[0])
+		resp := pageResponse(linksToDoCurrent[counter])
 		defer resp.Body.Close()
 
 		pageLinks := loopGetPage(resp.Body, pageActionSaveLinks)
 		addToLinksToDoNext(pageLinks, host)
 		linksDone = append(linksDone, link)
 	}
-
 	linksToDoCurrent = nil
 	linksToDoCurrent = copyItemsToSlice(linksToDoNext, linksToDoCurrent)
 	linksToDoNext = nil
@@ -47,8 +44,9 @@ func crawPageForLinks() {
 func addToLinksToDoNext(pageLinks []string, pageDomain string) {
 	for _, link := range pageLinks {
 		if strings.Contains(link, pageDomain) &&
-			!itemInSlice(link, linksToDoNext) &&
-			!itemInSlice(link, linksDone) {
+			itemInSlice(link, linksToDoCurrent) == false &&
+			itemInSlice(link, linksToDoNext) == false &&
+			itemInSlice(link, linksDone) == false {
 			linksToDoNext = append(linksToDoNext, link)
 		}
 	}
