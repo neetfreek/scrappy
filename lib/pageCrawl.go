@@ -13,8 +13,8 @@ var host = ""
 func crawlSite(url string) {
 
 	host = pageDomain(url)
-	linksToDoNext = append(linksToDoNext, host)
-	linksToDoCurrent = append(linksToDoCurrent, url)
+	linksToDoNext = append(linksToDoNext, strings.Trim(host, "/"))
+	linksToDoCurrent = append(linksToDoCurrent, strings.Trim(url, "/"))
 
 	crawPageForLinks()
 
@@ -43,6 +43,7 @@ func crawPageForLinks() {
 
 func addToLinksToDoNext(pageLinks []string, pageDomain string) {
 	for _, link := range pageLinks {
+		link = strings.Trim(link, "/")
 		if strings.Contains(link, pageDomain) &&
 			itemInSlice(link, linksToDoCurrent) == false &&
 			itemInSlice(link, linksToDoNext) == false &&
