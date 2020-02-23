@@ -23,12 +23,12 @@ import (
 var linksToDoCurrent = []string{}
 var linksToDoNext = []string{}
 var linksDone = []string{}
-var host = ""
+var domain = ""
 
 func crawlSite(url string) {
 
-	host = pageDomain(url)
-	linksToDoNext = append(linksToDoNext, strings.Trim(host, "/"))
+	domain = pageDomain(url)
+	linksToDoNext = append(linksToDoNext, strings.Trim(domain, "/"))
 	linksToDoCurrent = append(linksToDoCurrent, strings.Trim(url, "/"))
 
 	crawPageForLinks()
@@ -44,7 +44,7 @@ func crawPageForLinks() {
 		defer resp.Body.Close()
 
 		pageLinks := loopGetPage(resp.Body, pageActionSaveLinks)
-		addToLinksToDoNext(pageLinks, host)
+		addToLinksToDoNext(pageLinks, domain)
 		linksDone = append(linksDone, link)
 	}
 	linksToDoCurrent = nil
