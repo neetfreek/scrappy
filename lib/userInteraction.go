@@ -78,5 +78,19 @@ func getUserPageOption() string {
 	fmt.Print(messageChoosePageURL)
 	pageURL := getUserInputOption()
 
-	return pageURL
+func getDomainScope(url string) {
+	scopesParts := []string{}
+	scopes := []string{}
+	scopes = append(scopes, pageDomain(url))
+	urlSplit := strings.Split(url, "/")
+
+	for counter := 1; counter < len(urlSplit); counter++ {
+		if len(urlSplit[counter]) > 0 {
+			scopesParts = append(scopesParts, urlSplit[counter])
+		}
+	}
+
+	for counter := 1; counter < len(scopesParts); counter++ {
+		scopes = append(scopes, scopes[counter-1]+slash+scopesParts[counter])
+	}
 }
