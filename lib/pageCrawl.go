@@ -3,7 +3,7 @@ package lib
 /*==================================================================================*
 * Examine pages, sites and retrieve data from multiple pages						*
 *===================================================================================*
-* The crawlSite routine goes through link and domain URL looking for link URLs to		*
+* The crawlSite routine goes through link and domain URL looking for link URLs to	*
 *	other pages within the domain.													*
 *	1) Link URLs are put into linksToDoCurrent, from where each are in turn crawled	*
 *		for link URLs they contain.													*
@@ -44,45 +44,16 @@ func crawPageForLinks() {
 		defer resp.Body.Close()
 
 		pageLinks := loopGetPage(resp.Body, pageActionSaveLinks)
-		addToLinksToDoNext(pageLinks, domain)
+		linksToDoNext = addToLinksToDoNext(pageLinks, domain)
 		linksDone = append(linksDone, link)
 	}
 	linksToDoCurrent = nil
 	linksToDoCurrent = copyItemsToSlice(linksToDoNext, linksToDoCurrent)
 	linksToDoNext = nil
 
-	if len(linksToDoCurrent) > 0 {
+	if len(linksToDoCurrent) > 0 &&
+		len(linksToDoCurrent) < 5000 { // CAP RESULT COUNT FOR TESTING
+		fmt.Println("LINKS FETCHED: ", len(linksToDoCurrent))
 		crawPageForLinks()
 	}
-}
-
-// Helper functions
-
-func addToLinksToDoNext(pageLinks []string, pageDomain string) {
-	for _, link := range pageLinks {
-		link = strings.Trim(link, "/")
-		if strings.Contains(link, pageDomain) &&
-			itemInSlice(link, linksToDoCurrent) == false &&
-			itemInSlice(link, linksToDoNext) == false &&
-			itemInSlice(link, linksDone) == false {
-			linksToDoNext = append(linksToDoNext, link)
-		}
-	}
-}
-
-func itemInSlice(item string, slice []string) bool {
-	for _, itemSlice := range slice {
-		if itemSlice == item {
-			return true
-		}
-	}
-	return false
-}
-
-func copyItemsToSlice(src, dest []string) []string {
-	slice := dest
-	for _, item := range src {
-		slice = append(slice, item)
-	}
-	return slice
 }
