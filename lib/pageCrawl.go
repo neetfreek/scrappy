@@ -16,7 +16,6 @@ package lib
 *===================================================================================*/
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -32,10 +31,6 @@ func crawlSite(url string) {
 	linksToDoCurrent = append(linksToDoCurrent, strings.Trim(url, "/"))
 
 	crawPageForLinks()
-
-	for counter, link := range linksDone {
-		fmt.Printf("%v: %v\n", counter, link)
-	}
 }
 
 func crawPageForLinks() {
@@ -50,10 +45,4 @@ func crawPageForLinks() {
 	linksToDoCurrent = nil
 	linksToDoCurrent = copyItemsToSlice(linksToDoNext, linksToDoCurrent)
 	linksToDoNext = nil
-
-	if len(linksToDoCurrent) > 0 &&
-		len(linksToDoCurrent) < 5000 { // CAP RESULT COUNT FOR TESTING
-		fmt.Println("LINKS FETCHED: ", len(linksToDoCurrent))
-		crawPageForLinks()
-	}
 }
