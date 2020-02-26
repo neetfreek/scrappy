@@ -13,6 +13,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 // GreetUser on application start
@@ -74,11 +75,20 @@ func getUserInputOption() string {
 	return userInputStringCleaned
 }
 
-func getUserPageOption() string {
+func getPageSelection() string {
 	fmt.Print(messageChoosePageURL)
 	pageURL := getUserInputOption()
+	return pageURL
+}
 
-func getDomainScope(url string) {
+func getScopeSelection(scopes []string) string {
+	fmt.Print(messageSelectScope)
+	userInput := userMenuInput(scopes)
+
+	return userInput
+}
+
+func getDomainScopes(url string) []string {
 	scopesParts := []string{}
 	scopes := []string{}
 	scopes = append(scopes, pageDomain(url))
@@ -93,4 +103,6 @@ func getDomainScope(url string) {
 	for counter := 1; counter < len(scopesParts); counter++ {
 		scopes = append(scopes, scopes[counter-1]+slash+scopesParts[counter])
 	}
+
+	return scopes
 }

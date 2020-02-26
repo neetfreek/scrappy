@@ -56,6 +56,7 @@ var messageChoosePageAction = "Choose an action: "
 var messageChoosePageURL = "Enter a URL: "
 var messageNoPage = "Could not find page"
 var messageNotURLFormat = "URL format error:"
+var messageSelectScope = "Select scope: "
 
 // Top-level action input options
 var actionPageContent = "Get page content"
