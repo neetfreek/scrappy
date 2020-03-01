@@ -27,11 +27,14 @@ var domain = ""
 func crawlSite(url string) {
 
 	domain = pageDomain(url)
-	linksToDoNext = append(linksToDoNext, strings.Trim(domain, "/"))
 	linksToDoCurrent = append(linksToDoCurrent, strings.Trim(url, "/"))
+	if url != domain {
+		linksToDoNext = append(linksToDoNext, strings.Trim(domain, "/"))
+	}
 
-	crawPageForLinks()
-}
+	for len(linksToDoCurrent) > 0 {
+		crawPageForLinks()
+	}
 
 func crawPageForLinks() {
 	for counter, link := range linksToDoCurrent {
