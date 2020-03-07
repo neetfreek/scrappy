@@ -16,7 +16,9 @@ package lib
 *===================================================================================*/
 
 import (
+	"fmt"
 	"strings"
+	"sync"
 )
 
 var linksToDoCurrent = []string{}
@@ -32,20 +34,58 @@ func crawlSite(url string) {
 		linksToDoNext = append(linksToDoNext, strings.Trim(domain, "/"))
 	}
 
+	var waitGroup sync.WaitGroup
+	var mutex sync.Mutex
+
 	for len(linksToDoCurrent) > 0 {
-		crawPageForLinks()
+		for _, link := range linksToDoCurrent {
+			waitGroup.Add(1)
+			go crawlPageForLinks(&waitGroup, &mutex, link)
+		}
+		// crawlPageForLinks() // OLD IMPLEMENTATION
 	}
+	waitGroup.Wait()
+	printCollection(linksDone, "DONE:")
+}
 
-func crawPageForLinks() {
-	for counter, link := range linksToDoCurrent {
-		resp := pageResponse(linksToDoCurrent[counter])
-		defer resp.Body.Close()
+func crawlPageForLinks(waitGroup *sync.WaitGroup, mutex *sync.Mutex, link string) {
+	// func crawlPageForLinks() { // OLD IMPLEMENTATION
+	var linksToAddToDone = []string{}
+	var linksToAddToLinksToDoNext = []string{}
+	var pageLinks = []string{}
 
-		pageLinks := loopGetPage(resp.Body, pageActionSaveLinks)
-		linksToDoNext = addToLinksToDoNext(pageLinks, domain)
-		linksDone = append(linksDone, link)
-	}
+	// for _, link := range linksToDoCurrent {
+	// pageLinks = getPageLinks(link)
+	// printCollection(pageLinks, "PAGE LINKS...")
+	// resp := pageResponse(linksToDoCurrent[counter])
+	// defer resp.Body.Close()
+
+	resp := pageResponse(link)
+	defer resp.Body.Close()
+	pageLinks = loopGetPage(resp.Body, pageActionSaveLinks)
+
+	// pageLinks = loopGetPage(resp.Body, pageActionSaveLinks)
+	linksToAddToDone = append(linksToAddToDone, link)
+	linksToAddToLinksToDoNext = addToLinksToDoNext(pageLinks, domain)
+	// printCollection(linksToAddToLinksToDoNext, "LINKS TO ADD  EXT")
+	// linksToDoNext = addToLinksToDoNext(pageLinks, domain) // OLD IMPLEMENTATION
+	// linksDone = append(linksDone, link) // OLD IMPLEMENTATION
+	// }
+	mutex.Lock()
+	linksDone = copyItemsToSlice(linksToAddToDone, linksDone)
+	printCollection(linksDone, "LINKS DONE SO FAR")
 	linksToDoCurrent = nil
-	linksToDoCurrent = copyItemsToSlice(linksToDoNext, linksToDoCurrent)
-	linksToDoNext = nil
+	// linksToDoCurrent = copyItemsToSlice(linksToDoNext, linksToDoCurrent) // OLD IMPLEMENTATION
+	linksToDoCurrent = copyItemsToSlice(linksToAddToLinksToDoNext, linksToDoCurrent)
+	// linksToDoNext = nil
+	mutex.Unlock()
+	waitGroup.Done()
+	fmt.Printf("Found %v links so far...\n", len(linksDone))
+}
+
+func getPageLinks(link string) []string {
+	resp := pageResponse(link)
+	defer resp.Body.Close()
+
+	return loopGetPage(resp.Body, pageActionSaveLinks)
 }
