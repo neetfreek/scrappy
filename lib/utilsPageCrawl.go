@@ -17,13 +17,13 @@ func addToLinksToDoNext(pageLinks []string, pageDomain string) []string {
 	for _, link := range pageLinks {
 		link = strings.Trim(link, "/")
 		if strings.Contains(link, pageDomain) &&
-			itemInSlice(link, linksToDoCurrent) == false &&
-			itemInSlice(link, linksToDoNext) == false &&
-			itemInSlice(link, linksDone) == false {
-			linksToDoNext = append(linksToDoNext, link)
+			itemInSlice(link, linksCurrentMaster) == false &&
+			itemInSlice(link, linksNextMaster) == false &&
+			itemInSlice(link, linksDoneMaster) == false {
+			linksNextMaster = append(linksNextMaster, link)
 		}
 	}
-	return linksToDoNext
+	return linksNextMaster
 }
 
 func itemInSlice(item string, slice []string) bool {
@@ -33,6 +33,21 @@ func itemInSlice(item string, slice []string) bool {
 		}
 	}
 	return false
+}
+
+func indexItem(item string, slice []string) int {
+	for index, itemSlice := range slice {
+		if itemSlice == item {
+			return index
+		}
+	}
+	return -1
+}
+
+// Remove item at index by moving to end of slice, returning slice of all items but last
+func removeItemFromSlice(indexItem int, slice []string) []string {
+	slice[len(slice)-1], slice[indexItem] = slice[indexItem], slice[len(slice)-1]
+	return slice[:len(slice)-1]
 }
 
 func copyItemsToSlice(src, dest []string) []string {

@@ -21,71 +21,56 @@ import (
 	"sync"
 )
 
-var linksToDoCurrent = []string{}
-var linksToDoNext = []string{}
-var linksDone = []string{}
+var linksCurrentMaster = []string{}
+var linksDoneMaster = []string{}
+var linksNextMaster = []string{}
+var linksPageCurrent = []string{}
 var domain = ""
 
 func crawlSite(url string) {
-
+	// Setup domain, start pages
 	domain = pageDomain(url)
-	linksToDoCurrent = append(linksToDoCurrent, strings.Trim(url, "/"))
+	linksCurrentMaster = append(linksCurrentMaster, strings.Trim(url, "/"))
 	if url != domain {
-		linksToDoNext = append(linksToDoNext, strings.Trim(domain, "/"))
+		linksNextMaster = append(linksNextMaster, strings.Trim(domain, "/"))
 	}
-
-	var waitGroup sync.WaitGroup
-	var mutex sync.Mutex
-
-	for len(linksToDoCurrent) > 0 {
-		for _, link := range linksToDoCurrent {
-			waitGroup.Add(1)
-			go crawlPageForLinks(&waitGroup, &mutex, link)
+	// Setup sync helpers
+	var wg sync.WaitGroup
+	var m sync.Mutex
+	// Crawl all pages' links
+	for len(linksCurrentMaster) > 0 && len(linksNextMaster) > 0 {
+		for counter, link := range linksCurrentMaster {
+			wg.Add(1)
+			fmt.Printf("%v: Crawling page at URL %v\n", counter, link)
+			go crawlPageForLinks(&wg, &m, link)
 		}
-		// crawlPageForLinks() // OLD IMPLEMENTATION
 	}
-	waitGroup.Wait()
-	printCollection(linksDone, "DONE:")
+	defer wg.Wait()
+	printCollection(linksDoneMaster, "DONE:")
 }
 
-func crawlPageForLinks(waitGroup *sync.WaitGroup, mutex *sync.Mutex, link string) {
-	// func crawlPageForLinks() { // OLD IMPLEMENTATION
-	var linksToAddToDone = []string{}
-	var linksToAddToLinksToDoNext = []string{}
-	var pageLinks = []string{}
-
-	// for _, link := range linksToDoCurrent {
-	// pageLinks = getPageLinks(link)
-	// printCollection(pageLinks, "PAGE LINKS...")
-	// resp := pageResponse(linksToDoCurrent[counter])
-	// defer resp.Body.Close()
-
+func crawlPageForLinks(wg *sync.WaitGroup, m *sync.Mutex, link string) {
+	defer wg.Done()
+	// get page links
 	resp := pageResponse(link)
 	defer resp.Body.Close()
-	pageLinks = loopGetPage(resp.Body, pageActionSaveLinks)
+	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
 
-	// pageLinks = loopGetPage(resp.Body, pageActionSaveLinks)
-	linksToAddToDone = append(linksToAddToDone, link)
-	linksToAddToLinksToDoNext = addToLinksToDoNext(pageLinks, domain)
-	// printCollection(linksToAddToLinksToDoNext, "LINKS TO ADD  EXT")
-	// linksToDoNext = addToLinksToDoNext(pageLinks, domain) // OLD IMPLEMENTATION
-	// linksDone = append(linksDone, link) // OLD IMPLEMENTATION
-	// }
-	mutex.Lock()
-	linksDone = copyItemsToSlice(linksToAddToDone, linksDone)
-	printCollection(linksDone, "LINKS DONE SO FAR")
-	linksToDoCurrent = nil
-	// linksToDoCurrent = copyItemsToSlice(linksToDoNext, linksToDoCurrent) // OLD IMPLEMENTATION
-	linksToDoCurrent = copyItemsToSlice(linksToAddToLinksToDoNext, linksToDoCurrent)
-	// linksToDoNext = nil
-	mutex.Unlock()
-	waitGroup.Done()
-	fmt.Printf("Found %v links so far...\n", len(linksDone))
-}
+	if itemInSlice(link, linksCurrentMaster) && !itemInSlice(link, linksDoneMaster) {
+		m.Lock()
 
-func getPageLinks(link string) []string {
-	resp := pageResponse(link)
-	defer resp.Body.Close()
+		removeItemFromSlice(indexItem(link, linksCurrentMaster), linksCurrentMaster)
+		linksDoneMaster = append(linksDoneMaster, link)
 
-	return loopGetPage(resp.Body, pageActionSaveLinks)
+		for _, item := range linksPageCurrent {
+			if indexItem(item, linksCurrentMaster) == -1 &&
+				indexItem(item, linksCurrentMaster) == -1 {
+				linksCurrentMaster = append(linksCurrentMaster, item)
+			}
+		}
+
+		m.Unlock()
+	}
+
+	fmt.Printf("Found %v links so far...\n", len(linksDoneMaster))
 }
