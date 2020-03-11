@@ -32,45 +32,44 @@ func crawlSite(url string) {
 	var domain = pageDomainName(url)
 	linksCurrentMaster = append(linksCurrentMaster, strings.Trim(url, "/"))
 	if url != domain {
-		linksNextMaster = append(linksNextMaster, strings.Trim(domain, "/"))
+		linksNextMaster = append(linksCurrentMaster, strings.Trim(domain, "/"))
 	}
 	// Setup sync helpers
 	var wg sync.WaitGroup
 	var m sync.Mutex
 	// Crawl all pages' links
-	for len(linksCurrentMaster) > 0 && len(linksNextMaster) > 0 {
-		for counter, link := range linksCurrentMaster {
+	for len(linksCurrentMaster) > 0 {
+		for _, link := range linksCurrentMaster {
 			wg.Add(1)
-			fmt.Printf("%v: Crawling page at URL %v\n", counter, link)
-			go crawlPageForLinks(&wg, &m, link)
+			crawlPageForLinks(&wg, &m, link, domain) // go routine goes through all links, loops again, too quickly, reduce and re-implement
 		}
 	}
 	defer wg.Wait()
 	printCollection(linksDoneMaster, "DONE:")
+	defer wg.Wait()
 }
 
-func crawlPageForLinks(wg *sync.WaitGroup, m *sync.Mutex, link string) {
+func crawlPageForLinks(wg *sync.WaitGroup, m *sync.Mutex, link, domain string) {
 	defer wg.Done()
 	// get page links
 	resp := pageResponse(link)
 	defer resp.Body.Close()
 	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
-
+	linksPageCurrent = domainLinks(linksPageCurrent, domain)
 	if itemInSlice(link, linksCurrentMaster) && !itemInSlice(link, linksDoneMaster) {
 		m.Lock()
 
-		removeItemFromSlice(indexItem(link, linksCurrentMaster), linksCurrentMaster)
 		linksDoneMaster = append(linksDoneMaster, link)
 
 		for _, item := range linksPageCurrent {
-			if indexItem(item, linksCurrentMaster) == -1 &&
-				indexItem(item, linksCurrentMaster) == -1 {
+			if !itemInSlice(item, linksCurrentMaster) &&
+				!itemInSlice(item, linksDoneMaster) {
 				linksCurrentMaster = append(linksCurrentMaster, item)
 			}
 		}
 
+		linksCurrentMaster = removeItemFromSlice(indexItem(link, linksCurrentMaster), linksCurrentMaster)
+
 		m.Unlock()
 	}
-
-	fmt.Printf("Found %v links so far...\n", len(linksDoneMaster))
 }
