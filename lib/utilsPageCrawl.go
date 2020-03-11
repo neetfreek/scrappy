@@ -58,6 +58,27 @@ func copyItemsToSlice(src, dest []string) []string {
 	return slice
 }
 
+func domainLinks(slice []string, domain string) []string {
+	var sliceStripped = []string{}
+
+	for _, link := range slice {
+		if strings.Contains(link, domain) && !isImageLink(link) {
+			sliceStripped = append(sliceStripped, link)
+		}
+	}
+
+	return sliceStripped
+}
+
+func isImageLink(link string) bool {
+	for _, imageFormat := range imageFormats {
+		if strings.Contains(link, imageFormat) {
+			return true
+		}
+	}
+	return false
+}
+
 func printCollection(collection []string, name string) {
 	fmt.Printf("------------------%v------------------\n", name)
 	for counter, link := range collection {
