@@ -87,6 +87,7 @@ var slash = "/"
 var newLine = "\n"
 var thisDirectoryDelimiter = "./"
 var underscore = "_"
+var dot = "."
 
 // Directory, file name suffixes
 var suffixImageLinks = "_linksImage"
