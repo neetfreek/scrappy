@@ -32,7 +32,7 @@ func pageResponse(url string) *http.Response {
 
 func robotsTxt(url string) {
 	var pageDomainStringArray = []string{}
-	pageDomain := pageDomain(url)
+	pageDomain := pageDomainURL(url)
 	pageDomainStringArray = append(pageDomainStringArray, pageDomain, addressRobotsTxt)
 	addressRobotsTxt := strings.Join(pageDomainStringArray, "")
 
@@ -53,10 +53,17 @@ func robotsTxt(url string) {
 	}
 }
 
-func pageDomain(url string) string {
+func pageDomainURL(url string) string {
 	re := regexp.MustCompile(`([^@\/\n]+@)?([^:\/\n]+)`)
 	pageDomain := re.FindAllStringSubmatch(url, -1)
 	pageDomainStringArray := []string{}
 	pageDomainStringArray = append(pageDomainStringArray, pageDomain[0][0], delimiterDomain, pageDomain[1][0])
 	return strings.Join(pageDomainStringArray, "")
+}
+
+func pageDomainName(url string) string {
+	reSlash := regexp.MustCompile(`([^@\/\n]+@)?([^:\/\n]+)`)
+	pageDomain := reSlash.FindAllStringSubmatch(url, -1)
+	pageName := strings.Split(pageDomain[1][0], ".")
+	return pageName[0] + dot + pageName[1]
 }

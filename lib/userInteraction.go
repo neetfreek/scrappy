@@ -91,7 +91,7 @@ func getScopeSelection(scopes []string) string {
 func getDomainScopes(url string) []string {
 	scopesParts := []string{}
 	scopes := []string{}
-	scopes = append(scopes, pageDomain(url))
+	scopes = append(scopes, pageDomainURL(url))
 	urlSplit := strings.Split(url, "/")
 
 	for counter := 1; counter < len(urlSplit); counter++ {

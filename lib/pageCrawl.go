@@ -29,7 +29,7 @@ var domain = ""
 
 func crawlSite(url string) {
 	// Setup domain, start pages
-	domain = pageDomain(url)
+	var domain = pageDomainName(url)
 	linksCurrentMaster = append(linksCurrentMaster, strings.Trim(url, "/"))
 	if url != domain {
 		linksNextMaster = append(linksNextMaster, strings.Trim(domain, "/"))
