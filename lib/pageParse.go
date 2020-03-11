@@ -64,7 +64,7 @@ func loopGetPage(body io.Reader, action string) []string {
 				if action == pageActionSaveImageLinks || action == pageActionSaveLinks {
 					pageData = getPageImagesOrLinks(token, tag, action)
 					if pageData != "" {
-						pageDataCollection = append(pageDataCollection, pageData)
+						pageDataCollection = append(pageDataCollection, strings.Trim(pageData, "/"))
 					}
 				}
 			}
