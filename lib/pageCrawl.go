@@ -40,7 +40,7 @@ func crawlSite(url string) {
 	// Crawl all pages' links
 	for len(linksCurrentMaster) > 0 {
 		for _, link := range linksCurrentMaster {
-			if !itemInSlice(link, linksInProgress) {
+			if indexItem(link, linksInProgress) == -1 {
 				wg.Add(1)
 				linksInProgress = append(linksInProgress, link)
 				go crawlPageForLinks(&wg, &m, link, domain)
@@ -59,14 +59,14 @@ func crawlPageForLinks(wg *sync.WaitGroup, m *sync.Mutex, link, domain string) {
 	defer resp.Body.Close()
 	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
 	linksPageCurrent = domainLinks(linksPageCurrent, domain)
-	if itemInSlice(link, linksCurrentMaster) && !itemInSlice(link, linksDoneMaster) {
+	if indexItem(link, linksCurrentMaster) != -1 && indexItem(link, linksDoneMaster) == -1 {
 
 		// update lists of links
 		m.Lock()
 		linksDoneMaster = append(linksDoneMaster, link)
 		for _, item := range linksPageCurrent {
-			if !itemInSlice(item, linksCurrentMaster) &&
-				!itemInSlice(item, linksDoneMaster) {
+			if indexItem(item, linksCurrentMaster) == -1 &&
+				indexItem(item, linksDoneMaster) == -1 {
 				linksCurrentMaster = append(linksCurrentMaster, item)
 			}
 		}

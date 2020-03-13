@@ -13,28 +13,6 @@ import (
 *	been crawled.																	*
 *===================================================================================*/
 
-func addToLinksToDoNext(pageLinks []string, pageDomain string) []string {
-	for _, link := range pageLinks {
-		link = strings.Trim(link, "/")
-		if strings.Contains(link, pageDomain) &&
-			itemInSlice(link, linksCurrentMaster) == false &&
-			itemInSlice(link, linksNextMaster) == false &&
-			itemInSlice(link, linksDoneMaster) == false {
-			linksNextMaster = append(linksNextMaster, link)
-		}
-	}
-	return linksNextMaster
-}
-
-func itemInSlice(item string, slice []string) bool {
-	for _, itemSlice := range slice {
-		if itemSlice == item {
-			return true
-		}
-	}
-	return false
-}
-
 func indexItem(item string, slice []string) int {
 	for index, itemSlice := range slice {
 		if itemSlice == item {
