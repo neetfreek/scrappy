@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"strings"
 	"sync"
+	"time"
 )
 
 var linksCurrentMaster = []string{}
@@ -28,6 +29,7 @@ var linksPageCurrent = []string{}
 var linksInProgress = []string{}
 
 func crawlSite(url string) {
+	defer Timer(time.Now(), "Total time:")
 	// Setup domain, start pages
 	var domain = pageDomainName(url)
 	linksCurrentMaster = append(linksCurrentMaster, strings.Trim(url, "/"))
