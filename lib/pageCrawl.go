@@ -25,7 +25,7 @@ var linksCurrentMaster = []string{}
 var linksDoneMaster = []string{}
 var linksNextMaster = []string{}
 var linksPageCurrent = []string{}
-var domain = ""
+var linksInProgress = []string{}
 
 func crawlSite(url string) {
 	// Setup domain, start pages
@@ -40,12 +40,15 @@ func crawlSite(url string) {
 	// Crawl all pages' links
 	for len(linksCurrentMaster) > 0 {
 		for _, link := range linksCurrentMaster {
-			wg.Add(1)
-			crawlPageForLinks(&wg, &m, link, domain) // go routine goes through all links, loops again, too quickly, reduce and re-implement
+			if !itemInSlice(link, linksInProgress) {
+				wg.Add(1)
+				linksInProgress = append(linksInProgress, link)
+				go crawlPageForLinks(&wg, &m, link, domain)
+				fmt.Printf("Crawled: %v\n", link)
+			}
 		}
 	}
-	defer wg.Wait()
-	printCollection(linksDoneMaster, "DONE:")
+	printCollection(linksDoneMaster, "Links found from "+domain)
 	defer wg.Wait()
 }
 
@@ -57,19 +60,18 @@ func crawlPageForLinks(wg *sync.WaitGroup, m *sync.Mutex, link, domain string) {
 	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
 	linksPageCurrent = domainLinks(linksPageCurrent, domain)
 	if itemInSlice(link, linksCurrentMaster) && !itemInSlice(link, linksDoneMaster) {
+
+		// update lists of links
 		m.Lock()
-
 		linksDoneMaster = append(linksDoneMaster, link)
-
 		for _, item := range linksPageCurrent {
 			if !itemInSlice(item, linksCurrentMaster) &&
 				!itemInSlice(item, linksDoneMaster) {
 				linksCurrentMaster = append(linksCurrentMaster, item)
 			}
 		}
-
 		linksCurrentMaster = removeItemFromSlice(indexItem(link, linksCurrentMaster), linksCurrentMaster)
-
+		linksInProgress = removeItemFromSlice(indexItem(link, linksInProgress), linksInProgress)
 		m.Unlock()
 	}
 }
