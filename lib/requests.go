@@ -20,7 +20,6 @@ import (
 )
 
 func pageResponse(url string) *http.Response {
-	// fmt.Printf("GETT RESPONSE FROM _%v_\n", url)
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Printf("%v %v", messageNotURLFormat, err)

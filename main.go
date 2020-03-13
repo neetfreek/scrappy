@@ -10,7 +10,6 @@ package main
 
 import (
 	"http-testing/lib"
-	"time"
 )
 
 func main() {
@@ -20,8 +19,6 @@ func main() {
 }
 
 func appLoop() {
-	// lib.Test()
-	defer lib.Timer(time.Now(), "total:")
 	for !lib.ExitRequested {
 		lib.MenuMain()
 	}
