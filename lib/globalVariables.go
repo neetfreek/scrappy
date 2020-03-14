@@ -52,7 +52,7 @@ var ExitRequested = false
 
 // Standard use messages to player
 var messageGreeting = "Welcome to scrappy!"
-var messageChoosePageAction = "Choose an action: "
+var messageChoosePageAction = "Selection: "
 var messageChoosePageURL = "Enter a URL: "
 var messageNoPage = "Could not find page"
 var messageNotURLFormat = "URL format error:"

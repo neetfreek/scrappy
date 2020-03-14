@@ -25,6 +25,7 @@ func GreetUser() {
 
 // MenuMain represents top-level menu for user application options
 func MenuMain() {
+	fmt.Println()
 	option := userMenuInput(InputOptionsMapMain)
 	startActionMain(option)
 }
@@ -40,7 +41,6 @@ func menuPage() {
 }
 
 func printMenuOptions(menuMap []string) {
-	fmt.Println()
 	for counter := range menuMap {
 		fmt.Printf("%v. %v\n", counter+1, menuMap[counter])
 	}
@@ -78,6 +78,7 @@ func getUserInputOption() string {
 func getPageSelection() string {
 	fmt.Print(messageChoosePageURL)
 	pageURL := getUserInputOption()
+
 	return pageURL
 }
 

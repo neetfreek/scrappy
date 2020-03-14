@@ -22,7 +22,7 @@ import (
 func pageResponse(url string) *http.Response {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("%v %v", messageNotURLFormat, err)
+		fmt.Printf("%v %v\n", messageNotURLFormat, err)
 		MenuMain()
 	}
 
