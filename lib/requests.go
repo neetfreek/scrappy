@@ -66,3 +66,12 @@ func pageDomainName(url string) string {
 	pageName := strings.Split(pageDomain[1][0], ".")
 	return pageName[0] + dot + pageName[1]
 }
+
+func validResponse(url string) bool {
+	resp := pageResponse(url)
+
+	if resp == nil {
+		return false
+	}
+	return true
+}

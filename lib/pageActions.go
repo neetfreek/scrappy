@@ -28,9 +28,11 @@ func startActionSite(option string) {
 		MenuMain()
 	} else {
 		pageURL := getPageSelection()
-		scopes := getDomainScopes(pageURL)
-		scope := getScopeSelection(scopes)
-		crawlSite(scope)
+		if validResponse(pageURL) {
+			scopes := getDomainScopes(pageURL)
+			scope := getScopeSelection(scopes)
+			crawlSite(scope)
+		}
 	}
 }
 
@@ -39,6 +41,8 @@ func startActionPage(option string) {
 		MenuMain()
 	} else {
 		pageURL := getPageSelection()
-		getPageContent(pageURL, option)
+		if validResponse(pageURL) {
+			getPageContent(pageURL, option)
+		}
 	}
 }
