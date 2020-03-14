@@ -22,26 +22,27 @@ import (
 	"time"
 )
 
-var linksCurrentMaster = []string{}
-var linksDoneMaster = []string{}
-var linksNextMaster = []string{}
+var linksCurrent = []string{}
+var linksDone = []string{}
+var linksNext = []string{}
 var linksPageCurrent = []string{}
 var linksInProgress = []string{}
 
 func crawlSite(url string) {
+	resetSlices()
 	defer Timer(time.Now(), "Total time:")
 	// Setup domain, start pages
 	var domain = pageDomainName(url)
-	linksCurrentMaster = append(linksCurrentMaster, strings.Trim(url, "/"))
+	linksCurrent = append(linksCurrent, strings.Trim(url, "/"))
 	if url != domain {
-		linksNextMaster = append(linksCurrentMaster, strings.Trim(domain, "/"))
+		linksNext = append(linksCurrent, strings.Trim(domain, "/"))
 	}
 	// Setup sync helpers
 	var wg sync.WaitGroup
 	var m sync.Mutex
 	// Crawl all pages' links
-	for len(linksCurrentMaster) > 0 {
-		for _, link := range linksCurrentMaster {
+	for len(linksCurrent) > 0 {
+		for _, link := range linksCurrent {
 			if indexItem(link, linksInProgress) == -1 {
 				wg.Add(1)
 				linksInProgress = append(linksInProgress, link)
@@ -50,7 +51,7 @@ func crawlSite(url string) {
 			}
 		}
 	}
-	printCollection(linksDoneMaster, "Links found from "+domain)
+	printCollection(linksDone, "Links found from "+domain)
 	defer wg.Wait()
 }
 
@@ -61,18 +62,18 @@ func crawlPageForLinks(wg *sync.WaitGroup, m *sync.Mutex, link, domain string) {
 	defer resp.Body.Close()
 	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
 	linksPageCurrent = domainLinks(linksPageCurrent, domain)
-	if indexItem(link, linksCurrentMaster) != -1 && indexItem(link, linksDoneMaster) == -1 {
+	if indexItem(link, linksCurrent) != -1 && indexItem(link, linksDone) == -1 {
 
 		// update lists of links
 		m.Lock()
-		linksDoneMaster = append(linksDoneMaster, link)
+		linksDone = append(linksDone, link)
 		for _, item := range linksPageCurrent {
-			if indexItem(item, linksCurrentMaster) == -1 &&
-				indexItem(item, linksDoneMaster) == -1 {
-				linksCurrentMaster = append(linksCurrentMaster, item)
+			if indexItem(item, linksCurrent) == -1 &&
+				indexItem(item, linksDone) == -1 {
+				linksCurrent = append(linksCurrent, item)
 			}
 		}
-		linksCurrentMaster = removeItemFromSlice(indexItem(link, linksCurrentMaster), linksCurrentMaster)
+		linksCurrent = removeItemFromSlice(indexItem(link, linksCurrent), linksCurrent)
 		linksInProgress = removeItemFromSlice(indexItem(link, linksInProgress), linksInProgress)
 		m.Unlock()
 	}

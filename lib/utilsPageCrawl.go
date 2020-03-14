@@ -57,6 +57,14 @@ func isImageLink(link string) bool {
 	return false
 }
 
+func resetSlices() {
+	linksCurrent = []string{}
+	linksDone = []string{}
+	linksNext = []string{}
+	linksPageCurrent = []string{}
+	linksInProgress = []string{}
+}
+
 func printCollection(collection []string, name string) {
 	fmt.Printf("------------------%v------------------\n", name)
 	for counter, link := range collection {
