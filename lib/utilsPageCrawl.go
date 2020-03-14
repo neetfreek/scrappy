@@ -60,7 +60,6 @@ func isImageLink(link string) bool {
 func resetSlices() {
 	linksCurrent = []string{}
 	linksDone = []string{}
-	linksNext = []string{}
 	linksPageCurrent = []string{}
 	linksInProgress = []string{}
 }

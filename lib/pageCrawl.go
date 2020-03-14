@@ -27,7 +27,6 @@ import (
 
 var linksCurrent = []string{}
 var linksDone = []string{}
-var linksNext = []string{}
 var linksPageCurrent = []string{}
 var linksInProgress = []string{}
 
@@ -38,7 +37,7 @@ func crawlSite(url string) {
 	var domain = pageDomainName(url)
 	linksCurrent = append(linksCurrent, strings.Trim(url, "/"))
 	if url != domain {
-		linksNext = append(linksCurrent, strings.Trim(domain, "/"))
+		linksCurrent = append(linksCurrent, strings.Trim(domain, "/"))
 	}
 	// Setup sync helpers
 	var wg sync.WaitGroup
