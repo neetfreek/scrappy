@@ -83,7 +83,7 @@ func getPageSelection() string {
 }
 
 func getScopeSelection(scopes []string) string {
-	fmt.Print(messageSelectScope)
+	fmt.Println(messageSelectScope)
 	userInput := userMenuInput(scopes)
 
 	return userInput
