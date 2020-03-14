@@ -4,15 +4,18 @@ package lib
 * Examine pages, sites and retrieve data from multiple pages						*
 *===================================================================================*
 * The crawlSite routine goes through link and domain URL looking for link URLs to	*
-*	other pages within the domain.													*
-*	1) Link URLs are put into linksToDoCurrent, from where each are in turn crawled	*
-*		for link URLs they contain.													*
-*	2) URLS not alread in any lists are added to linksToDoNext.						*
-*	3) Once crawled, URLS are placed into linksDone.								*
-*	4) Once all linksToDoCurrent URLs have been crawled, the list's contents are	*
+*	other pages within the domain. Each link is crawled by a seperate go routine,	*
+*	making use of wait groups and mutexes.											*
+*	1) Link URLs are put into linksCurrent, from where each are in turn crawled for	*
+*		link URLs they contain.														*
+*	2) On start crawl, each link is added to linksInProgress so other go routines	*
+*		don't also crawl that link.												 	*
+*	2) URLS not already in any lists are added to linksCurrent.						*
+*	3) Once crawled, URLS are placed into linksDone and removed from linksCurrent	*
+*	4) Once all linksCurrent URLs have been crawled, the list's contents are		*
 *		replaced by those of linksToDoNext, and linksToDoNext is cleared.			*
-*	5) The process is complete when there are no more links from linksToDoNext to	*
-*		put into linksToDoCurrent.													*
+*	5) The process is complete when there are no more links from linksCurrent left	*
+*		to crawl.																	*
 *===================================================================================*/
 
 import (
