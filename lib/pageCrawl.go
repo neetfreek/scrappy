@@ -37,28 +37,24 @@ func crawlSite(url string) {
 	var domain = pageDomainName(url)
 	linksCurrent = append(linksCurrent, strings.Trim(url, "/"))
 	if url != domain {
-		linksCurrent = append(linksCurrent, strings.Trim(domain, "/"))
+		// linksCurrent = append(linksCurrent, strings.Trim(domain, "/"))
 	}
 	// Setup sync helpers
-	var wg sync.WaitGroup
 	var m sync.Mutex
 	// Crawl all pages' links
 	for len(linksCurrent) > 0 {
 		for _, link := range linksCurrent {
 			if indexItem(link, linksInProgress) == -1 {
-				wg.Add(1)
 				linksInProgress = append(linksInProgress, link)
-				go crawlPageForLinks(&wg, &m, link, domain)
+				go crawlPageForLinks(&m, link, domain)
 				fmt.Printf("Crawled: %v\n", link)
 			}
 		}
 	}
 	printCollection(linksDone, "Links found from "+domain)
-	defer wg.Wait()
 }
 
-func crawlPageForLinks(wg *sync.WaitGroup, m *sync.Mutex, link, domain string) {
-	defer wg.Done()
+func crawlPageForLinks(m *sync.Mutex, link, domain string) {
 	// get page links
 	resp := pageResponse(link)
 	defer resp.Body.Close()
