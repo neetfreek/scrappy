@@ -36,12 +36,9 @@ func getPageContent(url, action string) {
 		pageDataToWrite = getPageHTML(resp)
 	} else {
 		pageDataCollection = loopGetPage(resp.Body, action)
-		pageDataToWrite = strings.Join(pageDataCollection, "\n")
+		pageDataToWrite = sliceToString(pageDataCollection)
 	}
-
-	if len(pageDataToWrite) > 0 {
-		writePageContentsToFile(url, pageDataToWrite, action)
-	}
+	writeDataToFile(url, pageDataToWrite, action)
 }
 
 func loopGetPage(body io.Reader, action string) []string {
