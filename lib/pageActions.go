@@ -31,7 +31,7 @@ func startActionSite(option string) {
 		if validResponse(pageURL) {
 			scopes := getDomainScopes(pageURL)
 			scope := getScopeSelection(scopes)
-			crawlSite(scope)
+			crawlSite(scope, option)
 		}
 	}
 }

@@ -30,7 +30,7 @@ var linksDone = []string{}
 var linksPageCurrent = []string{}
 var linksInProgress = []string{}
 
-func crawlSite(url string) {
+func crawlSite(url, action string) {
 	resetSlices()
 	defer Timer(time.Now(), "Total time:")
 	// Setup domain, start pages
