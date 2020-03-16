@@ -9,7 +9,7 @@ package main
 *===================================================================================*/
 
 import (
-	"http-testing/lib"
+	"scrappy/lib"
 )
 
 func main() {
