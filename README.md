@@ -1,2 +1,37 @@
+# Scrappy
+
+In its current form, Scrappy is a manual web-scraper with the following features:
+
+- Save to .txt files the following from a web page:
+  - page link URLs
+  - image link URLs
+  - text
+  - HTML copy of the page
+
+## TODO
+
+The following list contains features or developments I would like to implement soon (tm):
+
+- User-facing features:
+  - Add web site-wide functionality similar the web page functionality mentioned above
+- Internal developments:
+  - Implement bluemonday sanitation for all input
+  - Imlement robotstxt to get information from robotstxt files, for e.g. determining and setting appropriate crawl delays - a big blocker for automating scraping
+
 ## Building
+
 Run `go build -o scrappy main.go` to build the project into a binary called scrappy
+
+## Dependencies
+
+The following dependencies are required for this application:
+
+- Go's [html pacakge](https://godoc.org/golang.org/x/net/html) for HTML functionality
+- temoto's [robotstxt package](https://github.com/temoto/robotstxt) for robotstxt parsing functionality
+- microcosm's [bluemonday package](https://github.com/microcosm-cc/bluemonday)for sanitation
+
+To download them for development, run the following command in the root directory:
+
+```@bash
+go get golang.org/x/net/html; go get github.com/temoto/robotstxt; go get github.com/microcosm-cc/bluemonday
+```
