@@ -24,10 +24,13 @@ import (
 	"time"
 )
 
+// helper slices
 var linksCurrent = []string{}
+var linksInProgress = []string{}
+
+// content
 var linksDone = []string{}
 var linksImages = []string{}
-var linksInProgress = []string{}
 
 func crawlSite(url, userAction string) {
 	resetSlices()
@@ -59,9 +62,6 @@ func crawlPageForLinks(m *sync.Mutex, link, domain, userAction string) {
 	// store image links if userAction to save image links
 	if userAction == siteActionSaveImageLinks {
 		linksImagesCurrent = addToLinksImages(linksPageCurrent, linksImagesCurrent)
-	}
-	if userAction == siteActionSaveText {
-
 	}
 	// store only URL links in domain
 	linksPageCurrent = domainLinks(linksPageCurrent, domain)
