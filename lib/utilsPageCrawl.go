@@ -62,7 +62,6 @@ func resetSlices() {
 	linksDone = []string{}
 	linksImages = []string{}
 	linksInProgress = []string{}
-	linksPageCurrent = []string{}
 }
 
 func printCollection(collection []string, name string) {

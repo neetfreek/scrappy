@@ -28,7 +28,6 @@ var linksCurrent = []string{}
 var linksDone = []string{}
 var linksImages = []string{}
 var linksInProgress = []string{}
-var linksPageCurrent = []string{}
 
 func crawlSite(url, userAction string) {
 	resetSlices()
@@ -56,11 +55,15 @@ func crawlPageForLinks(m *sync.Mutex, link, domain, userAction string) {
 	defer resp.Body.Close()
 
 	linksImagesCurrent := []string{}
-	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
+	linksPageCurrent := loopGetPage(resp.Body, pageActionSaveLinks)
 	// store image links if userAction to save image links
 	if userAction == siteActionSaveImageLinks {
 		linksImagesCurrent = addToLinksImages(linksPageCurrent, linksImagesCurrent)
 	}
+	if userAction == siteActionSaveText {
+
+	}
+	// store only URL links in domain
 	linksPageCurrent = domainLinks(linksPageCurrent, domain)
 
 	if indexItem(link, linksCurrent) != -1 && indexItem(link, linksDone) == -1 {
