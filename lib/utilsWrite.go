@@ -35,12 +35,14 @@ func getNameSuffixByAction(action string) string {
 		suffix = suffixImageLinks
 	case pageActionSaveLinks:
 		suffix = suffixLinks
-	case siteActionSaveLinks:
-		suffix = suffixLinks
 	case pageActionSavePage:
 		suffix = suffixHTML
 	case pageActionSaveText:
 		suffix = suffixText
+	case siteActionSaveImageLinks:
+		suffix = suffixImageLinks
+	case siteActionSaveLinks:
+		suffix = suffixLinks
 	}
 	return suffix
 }

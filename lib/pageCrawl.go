@@ -27,8 +27,9 @@ import (
 
 var linksCurrent = []string{}
 var linksDone = []string{}
-var linksPageCurrent = []string{}
+var linksImages = []string{}
 var linksInProgress = []string{}
+var linksPageCurrent = []string{}
 
 func crawlSite(url, userAction string) {
 	resetSlices()
@@ -43,21 +44,27 @@ func crawlSite(url, userAction string) {
 		for _, link := range linksCurrent {
 			if indexItem(link, linksInProgress) == -1 {
 				linksInProgress = append(linksInProgress, link)
-				go crawlPageForLinks(&m, link, domain)
+				go crawlPageForLinks(&m, link, domain, userAction)
 				fmt.Printf("Crawled: %v\n", link)
 			}
 		}
 	}
+	crawlOutput(url, userAction)
 	// printCollection(linksDone, "Links found from "+domain)
-	crawlOutput(url, userAction, linksDone)
 }
 
-func crawlPageForLinks(m *sync.Mutex, link, domain string) {
+func crawlPageForLinks(m *sync.Mutex, link, domain, userAction string) {
 	// get page links
 	resp := pageResponse(link)
 	defer resp.Body.Close()
+
 	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
+	// store image links if userAction to save image links
+	if userAction == siteActionSaveImageLinks {
+		linksImages = addToLinksImages(linksPageCurrent, linksImages)
+	}
 	linksPageCurrent = domainLinks(linksPageCurrent, domain)
+
 	if indexItem(link, linksCurrent) != -1 && indexItem(link, linksDone) == -1 {
 
 		// update lists of links

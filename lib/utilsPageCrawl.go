@@ -60,8 +60,9 @@ func isImageLink(link string) bool {
 func resetSlices() {
 	linksCurrent = []string{}
 	linksDone = []string{}
-	linksPageCurrent = []string{}
+	linksImages = []string{}
 	linksInProgress = []string{}
+	linksPageCurrent = []string{}
 }
 
 func printCollection(collection []string, name string) {
@@ -71,15 +72,23 @@ func printCollection(collection []string, name string) {
 	}
 }
 
-func crawlOutput(url, userAction string, content []string) {
+func crawlOutput(url, userAction string) {
 
 	switch userAction {
 	case siteActionSaveLinks:
-		writePageContentsToFile(url, convertStringSliceToString(content), userAction)
-	case siteActionGetImageLinks:
-		writePageContentsToFile(url, convertStringSliceToString(content), userAction)
+		writePageContentsToFile(url, convertStringSliceToString(linksDone), userAction)
+	case siteActionSaveImageLinks:
+		writePageContentsToFile(url, convertStringSliceToString(linksImages), userAction)
 	}
-	// convert image, URL links to string
-	fmt.Println("USER OPTION: ", userAction)
-	printCollection(content, "ON THIS COLLECTION")
+}
+
+func addToLinksImages(linksPageCurrent, linksImages []string) []string {
+	updatedlinksImages := linksImages
+
+	for _, item := range linksPageCurrent {
+		if isImageLink(item) {
+			updatedlinksImages = append(updatedlinksImages, item)
+		}
+	}
+	return updatedlinksImages
 }
