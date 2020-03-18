@@ -19,7 +19,6 @@ package lib
 *===================================================================================*/
 
 import (
-	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -45,12 +44,10 @@ func crawlSite(url, userAction string) {
 			if indexItem(link, linksInProgress) == -1 {
 				linksInProgress = append(linksInProgress, link)
 				go crawlPageForLinks(&m, link, domain, userAction)
-				fmt.Printf("Crawled: %v\n", link)
 			}
 		}
 	}
 	crawlOutput(url, userAction)
-	// printCollection(linksDone, "Links found from "+domain)
 }
 
 func crawlPageForLinks(m *sync.Mutex, link, domain, userAction string) {
