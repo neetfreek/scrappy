@@ -55,10 +55,11 @@ func crawlPageForLinks(m *sync.Mutex, link, domain, userAction string) {
 	resp := pageResponse(link)
 	defer resp.Body.Close()
 
+	linksImagesCurrent := []string{}
 	linksPageCurrent = loopGetPage(resp.Body, pageActionSaveLinks)
 	// store image links if userAction to save image links
 	if userAction == siteActionSaveImageLinks {
-		linksImages = addToLinksImages(linksPageCurrent, linksImages)
+		linksImagesCurrent = addToLinksImages(linksPageCurrent, linksImagesCurrent)
 	}
 	linksPageCurrent = domainLinks(linksPageCurrent, domain)
 
@@ -73,6 +74,7 @@ func crawlPageForLinks(m *sync.Mutex, link, domain, userAction string) {
 				linksCurrent = append(linksCurrent, item)
 			}
 		}
+		linksImages = addToLinksImages(linksImagesCurrent, linksImages)
 		linksCurrent = removeItemFromSlice(indexItem(link, linksCurrent), linksCurrent)
 		linksInProgress = removeItemFromSlice(indexItem(link, linksInProgress), linksInProgress)
 		m.Unlock()
