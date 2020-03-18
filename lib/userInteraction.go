@@ -26,18 +26,18 @@ func GreetUser() {
 // MenuMain represents top-level menu for user application options
 func MenuMain() {
 	fmt.Println()
-	option := userMenuInput(InputOptionsMapMain)
-	startActionMain(option)
+	userSelection := userMenuInput(InputOptionsMapMain)
+	startActionMain(userSelection)
 }
 
 func menuSite() {
-	option := userMenuInput(InputOptionsMapSite)
-	startActionSite(option)
+	userSelection := userMenuInput(InputOptionsMapSite)
+	startActionSite(userSelection)
 }
 
 func menuPage() {
-	option := userMenuInput(InputOptionsMapPage)
-	startActionPage(option)
+	userSelection := userMenuInput(InputOptionsMapPage)
+	startActionPage(userSelection)
 }
 
 func printMenuOptions(menuMap []string) {
@@ -50,21 +50,21 @@ func printMenuOptions(menuMap []string) {
 // User input functions
 
 func userMenuInput(menuMap []string) string {
-	option := ""
+	userSelection := ""
 	userInput := ""
 	userInputInt := -1
 
-	for option == "" {
+	for userSelection == "" {
 		for userInputInt < 0 || userInputInt > len(menuMap)-1 {
 			printMenuOptions(menuMap)
 			fmt.Print(messageChoosePageAction)
 			userInput = getUserInputOption()
 			userInputInt = stringToInt(userInput) - 1
 		}
-		option = menuMap[userInputInt]
+		userSelection = menuMap[userInputInt]
 	}
 
-	return option
+	return userSelection
 }
 
 func getUserInputOption() string {

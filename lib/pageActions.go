@@ -9,8 +9,8 @@ package lib
 *	in menus.																		*
 *===================================================================================*/
 
-func startActionMain(option string) {
-	switch option {
+func startActionMain(userAction string) {
+	switch userAction {
 	case actionPageContent:
 		menuPage()
 		break
@@ -23,26 +23,26 @@ func startActionMain(option string) {
 	}
 }
 
-func startActionSite(option string) {
-	if option == actionMenuMain {
+func startActionSite(userAction string) {
+	if userAction == actionMenuMain {
 		MenuMain()
 	} else {
 		pageURL := getPageSelection()
 		if validResponse(pageURL) {
 			scopes := getDomainScopes(pageURL)
 			scope := getScopeSelection(scopes)
-			crawlSite(scope)
+			crawlSite(scope, userAction)
 		}
 	}
 }
 
-func startActionPage(option string) {
-	if option == actionMenuMain {
+func startActionPage(userAction string) {
+	if userAction == actionMenuMain {
 		MenuMain()
 	} else {
 		pageURL := getPageSelection()
 		if validResponse(pageURL) {
-			getPageContent(pageURL, option)
+			getPageContent(pageURL, userAction)
 		}
 	}
 }
