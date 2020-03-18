@@ -36,9 +36,6 @@ func crawlSite(url string) {
 	// Setup domain, start pages
 	var domain = pageDomainName(url)
 	linksCurrent = append(linksCurrent, strings.Trim(url, "/"))
-	if url != domain {
-		// linksCurrent = append(linksCurrent, strings.Trim(domain, "/"))
-	}
 	// Setup sync helpers
 	var m sync.Mutex
 	// Crawl all pages' links
