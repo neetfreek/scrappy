@@ -34,7 +34,8 @@ var InputOptionsMapMain = []string{
 
 // InputOptionsMapSite maps user input to site-content options
 var InputOptionsMapSite = []string{
-	siteActionGetLinks,
+	siteActionSaveLinks,
+	// siteActionGetImageLinks,
 	actionMenuMain,
 }
 
@@ -65,13 +66,14 @@ var actionMenuMain = "Return to main menu"
 var actionExit = "Exit application"
 
 // Site action input options
-var siteActionGetLinks = "Get all site links"
+var siteActionSaveLinks = "Save site links to file (.txt)"
+var siteActionGetImageLinks = "Save site image links to file (.txt)"
 
 // Page action input options
 var pageActionSaveText = "Save page text content to file (.txt)"
 var pageActionSaveLinks = "Save page links to file (.txt)"
 var pageActionSavePage = "Save page to file (.html)"
-var pageActionSaveImageLinks = "Save page image links to directory"
+var pageActionSaveImageLinks = "Save page image links to file (.txt)"
 
 // File information
 var pageURL = "Page URL"

@@ -70,3 +70,16 @@ func printCollection(collection []string, name string) {
 		fmt.Printf("%v: %v\n", counter, link)
 	}
 }
+
+func crawlOutput(url, userAction string, content []string) {
+
+	switch userAction {
+	case siteActionSaveLinks:
+		writePageContentsToFile(url, convertStringSliceToString(content), userAction)
+	case siteActionGetImageLinks:
+		writePageContentsToFile(url, convertStringSliceToString(content), userAction)
+	}
+	// convert image, URL links to string
+	fmt.Println("USER OPTION: ", userAction)
+	printCollection(content, "ON THIS COLLECTION")
+}

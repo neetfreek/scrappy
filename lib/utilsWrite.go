@@ -35,6 +35,8 @@ func getNameSuffixByAction(action string) string {
 		suffix = suffixImageLinks
 	case pageActionSaveLinks:
 		suffix = suffixLinks
+	case siteActionSaveLinks:
+		suffix = suffixLinks
 	case pageActionSavePage:
 		suffix = suffixHTML
 	case pageActionSaveText:
@@ -66,10 +68,10 @@ func timeStamp() string {
 }
 
 // Helpers for writing contents to local storage
-func writePageContentsToFile(url, pageBodyString, action string) {
+func writePageContentsToFile(url, pageBodyString, userAction string) {
 	nameDirectoryParent := getNameDirectoryFromURL(url, "")
 	var nameDirectoryContent []string
-	nameDirectoryContent = append(nameDirectoryContent, nameDirectoryParent, slash, getNameDirectoryFromURL(url, action))
+	nameDirectoryContent = append(nameDirectoryContent, nameDirectoryParent, slash, getNameDirectoryFromURL(url, userAction))
 	nameFile := getNameFileFromURL(url)
 	writeToFile(fileInformation(url), strings.Join(nameDirectoryContent, ""), nameFile, pageBodyString)
 }

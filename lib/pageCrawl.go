@@ -48,7 +48,8 @@ func crawlSite(url, userAction string) {
 			}
 		}
 	}
-	printCollection(linksDone, "Links found from "+domain)
+	// printCollection(linksDone, "Links found from "+domain)
+	crawlOutput(url, userAction, linksDone)
 }
 
 func crawlPageForLinks(m *sync.Mutex, link, domain string) {
