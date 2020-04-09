@@ -10,13 +10,13 @@ In its current form, Scrappy is a manual web-scraper with the following features
 
 ## TODO
 
-The following list contains features or developments I would like to implement soon (tm):
+The following list contains features or developments I would like to implement at some point in time:
 
 - User-facing features:
   - Add web site-wide functionality similar the web page functionality mentioned above
 - Internal developments:
   - Implement bluemonday sanitation for all input
-  - Imlement robotstxt to get information from robotstxt files, for e.g. determining and setting appropriate crawl delays - a big blocker for automating scraping
+  - Implement robotstxt to get information from robotstxt files, for e.g. determining and setting appropriate crawl delays - a big blocker for automating scraping
 
 ## Building
 
