@@ -28,14 +28,15 @@ var HTMLMap map[string]string
 // InputOptionsMapMain maps user input to top-level application options
 var InputOptionsMapMain = []string{
 	actionPageContent,
-	actionSiteContent,
+	// actionSiteContent,
 	actionExit,
 }
 
 // InputOptionsMapSite maps user input to site-content options
 var InputOptionsMapSite = []string{
-	siteActionSaveLinks,
 	siteActionSaveImageLinks,
+	siteActionSaveLinks,
+	siteActionSaveText,
 	actionMenuMain,
 }
 
@@ -51,7 +52,7 @@ var InputOptionsMapPage = []string{
 // ExitRequested handles whether app loop terminates
 var ExitRequested = false
 
-// Standard use messages to player
+// Standard use messagesTimer to player
 var messageGreeting = "Welcome to scrappy!"
 var messageChoosePageAction = "Selection: "
 var messageChoosePageURL = "Enter a URL: "
@@ -66,8 +67,9 @@ var actionMenuMain = "Return to main menu"
 var actionExit = "Exit application"
 
 // Site action input options
-var siteActionSaveLinks = "Save site links to file (.txt)"
-var siteActionSaveImageLinks = "Save site image links to file (.txt)"
+var siteActionSaveImageLinks = "Save site image links to single file (.txt)"
+var siteActionSaveLinks = "Save site links to single file (.txt)"
+var siteActionSaveText = "Save site text content to single file (.txt)"
 
 // Page action input options
 var pageActionSaveText = "Save page text content to file (.txt)"
