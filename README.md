@@ -1,12 +1,23 @@
 # Scrappy
 
-In its current form, Scrappy is a manual web-scraper with the following features:
+In its current form, Scrappy is a basic command line application for downloading textual information from web pages. With Scrappy, you can:
 
 - Save to .txt files the following from a web page:
   - page link URLs
   - image link URLs
   - text
   - HTML copy of the page
+
+## Contents
+
+- [Use](##-use)
+- [TODO](##-todo)
+- [Building](##-building)
+- [Dependencies](##-dependencies)
+
+## Use
+
+Simply [build](##-building) and execute the program. Choose menu options by entering their corresponding numbers and enter the address of the web page you want.
 
 ## TODO
 
